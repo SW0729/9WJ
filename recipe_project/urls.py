@@ -19,7 +19,12 @@ from django.urls import path, include  # include는 다른 URL을 포함시킬 �
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView  # JWT 관련 뷰
 
 urlpatterns = [
-    path('admin/', admin.site.urls), # 장고 기본 관리자 페이지
-    path('api/auth/', include('accounts.urls')), # 인증 관련 urls
-    path('api/food/', include('food.urls')), # 음식 관련 urls
+    path('admin/', admin.site.urls),  # 장고 기본 관리자 페이지
+    path('api/auth/', include('accounts.urls')),  # 인증 관련 urls
+    path('api/food/', include('food.urls')),  # 음식 관련 urls
+    
+    # JWT 관련 URL 추가
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # JWT 발급
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # JWT 리프레시
 ]
+

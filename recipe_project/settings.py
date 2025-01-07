@@ -41,8 +41,16 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt', # jwt 관련 앱
     'accounts', # 이앱은 사용자 관리 앱임
-    'food', # recipe레시피 이름이 중복이라 food로 지정 #레시피 모델들을 관리하는 앱앱
+    'food', # recipe레시피 이름이 중복이라 food로 지정 #레시피 모델들을 관리하는 앱
+    'chatbot', # ai챗봇 통합앱앱
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT 인증
+    ],
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

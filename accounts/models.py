@@ -1,18 +1,28 @@
-from django.contrib.auth.models import AbstractUser  # Django 기본 사용자 모델을 확장
-from django.db import models  # Django에서 데이터베이스 모델을 사용하려면 'models'가 필요
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 class CustomUser(AbstractUser):
-    # 'AbstractUser'를 상속하여 기본 사용자 모델을 확장합니다.
-    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)  # 프로필 이미지를 추가 (선택적)
-    
-    # 충돌을 피하기 위해 related_name을 설정
+    """
+    사용자 모델(CustomUser)
+    Django의 기본 사용자 모델(AbstractUser)을 확장
+    """
+
     groups = models.ManyToManyField(
-        'auth.Group',
-        related_name='customuser_set',  # 'groups' 필드에 대한 역참조 이름을 변경
+        'auth.Group', 
+        related_name='customuser_set',  # 고유한 이름으로 변경
         blank=True
     )
     user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name='customuser_permissions',  # 'user_permissions' 필드에 대한 역참조 이름을 변경
+        'auth.Permission', 
+        related_name='customuser_permissions_set',  # 고유한 이름으로 변경
         blank=True
     )
+
+    def get_my_recipes(self):
+        """
+        사용자가 작성한 레시피만 반환하는 함수
+        """
+        from food.models import Recipe
+        return Recipe.objects.filter(author=self)  # 작성한 레시피만 반
+
+    
