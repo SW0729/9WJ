@@ -1,7 +1,9 @@
 import os  # 운영 체제와 상호작용하기 위한 모듈
 import openai  # OpenAI API 모듈
 from dotenv import load_dotenv  # .env 파일을 로드하기 위한 모듈
-
+from langchain_community.chat_models import ChatOpenAI
+from langchain_community.embeddings import OpenAIEmbeddings
+from .KJK_data_collect import query
 # OpenAI API 키 설정
 # OpenAI의 서비스를 사용하려면 API 키가 필요
 # 팀원에게 받은 OpenAI API 키를 "your_openai_api_key" 대신 입력
@@ -10,7 +12,7 @@ from dotenv import load_dotenv  # .env 파일을 로드하기 위한 모듈
 load_dotenv()
 
 # OpenAI API 키 설정
-openai.api_key = os.getenv("OPENAI_API_KEY")  # 환경 변수에서 API 키를 가져옴
+openai.api_key = os.getenv("OPENAI_API_KEY2")  # 환경 변수에서 API 키를 가져옴
 
 
 def chatbot_response(user_input):
@@ -51,7 +53,6 @@ def chatbot_response(user_input):
     Returns:
         str: AI가 생성한 답변. 오류가 발생하면 오류 메시지를 반환합니다.
     """
-
 
 
 

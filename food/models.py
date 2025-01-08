@@ -1,5 +1,3 @@
-# recipes/models.py
-
 from django.db import models
 from accounts.models import CustomUser  # 사용자 모델 가져오기
 

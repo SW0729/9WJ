@@ -1,3 +1,7 @@
+import warnings  # warnings 모듈 import
+
+# DeprecationWarning 무시
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 from django.shortcuts import render
 from rest_framework.views import APIView  # DRF에서 제공하는 기본 APIView 클래스
 from rest_framework.response import Response  # 클라이언트에게 응답을 보내는 클래스

@@ -1,4 +1,5 @@
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_community.chat_models import ChatOpenAI  # GPT-4 API 호출 클래스
+from langchain_community.embeddings import OpenAIEmbeddings  # Embedding 생성 클래스
 from langchain.callbacks.manager import CallbackManager
 from langchain.chains import RetrievalQA
 from langchain_community.vectorstores import Chroma
@@ -67,8 +68,12 @@ japanses_food = 'C:\\Users\\kevinkim\\Desktop\\recipes\\일식.json'
 chinses_food = 'C:\\Users\\kevinkim\\Desktop\\recipes\\중식.json'
 embeddings = OpenAIEmbeddings()
 
+# course = ['한식', '양식', '중식', '일식']
+# country_food = input('정하세요: ').replace(" ", "_").replace("&", "_")   
 course = ['한식', '양식', '중식', '일식']
-country_food = input('정하세요: ').replace(" ", "_").replace("&", "_")   
+country_food = "한식"  # 기본값으로 '한식' 설정
+if country_food not in course:
+    print("유효하지 않은 선택입니다. 기본값 '한식'을 사용합니다.")
 if country_food not in course:
     print('다시 선택해 주세요')
 persist_directory=f"chroma_{country_food}"

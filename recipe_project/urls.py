@@ -22,6 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),  # 장고 기본 관리자 페이지
     path('api/auth/', include('accounts.urls')),  # 인증 관련 urls
     path('api/food/', include('food.urls')),  # 음식 관련 urls
+    path('api/chatbot/', include('chatbot.urls')),  # 챗봇 추가
+    
     
     # JWT 관련 URL 추가
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # JWT 발급
