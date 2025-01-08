@@ -109,14 +109,14 @@ if os.path.exists(persist_directory):
     documents = load_documents(country_food)
 callback_handler = StreamingStdOutCallbackHandler()
 callback_manager = CallbackManager([callback_handler])
-llm = ChatOpenAI(model = 'gpt-4o', temperature = 0, streaming=True, callbacks=[callback_handler]) #streaming=True, callbacks=[callback_handler]
+llm = ChatOpenAI(model = 'gpt-4o-mini', temperature = 0, streaming=True, callbacks=[callback_handler]) #streaming=True, callbacks=[callback_handler]
 results = hybrid_search(query, vector_store, documents)
 context = f"""{results} 내용을 바탕으로 질문에 답해 주세요. 질문: {query}
 ***Don't forget to indicate the numbers or weight of the food or ingredients and also indiate the time or weight of the ingredients***
 Example:
 Boil it for 3 minuts -> Must indicate 3 minutes
 Wrong Example
-Boil it and wait -> You must indicate the time
+Boil it and wait -> You must indicate the time in 
 1.1 Identify any additional ingredients, tips, or unique elements that could enhance {results}.
 1.2 Add these enhancements to {results} as suggestions or optional steps, without altering the original recipe structure.(Enhanced Recipe -> 추가 첨가 재료)
 1.3 Provide detailed explanations for each suggestion, including:
