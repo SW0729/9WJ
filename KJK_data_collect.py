@@ -83,7 +83,7 @@ def filter_text(text):
     text = re.sub(r'[^a-zA-Z가-힣\s]', '', text)
     text = text.lower()
     return text
-query = "샥스핀 스프 레시피" #추후 계속 질문을 받는식으로 변경 가능
+query = "Kimbob recipe" #추후 계속 질문을 받는식으로 변경 가능
 #----------------------------------------------------------------------
 def hybrid_search(query, vector_store, documents, top_k=1):
     # query_embedding = embeddings.embed_query(query)
@@ -137,7 +137,7 @@ Boil it and wait -> You must indicate the time in
 6. ***Remove all the duplicated information (all)***.
     
 Full Example:
-Original Recipe: 고구마튀김 (1인분)
+레시피 이름: 고구마튀김 (1인분)
 재료:
 고구마 - 1개 (약 150g, 109 칼로리)
 튀김 가루 - 50g (187 칼로리)
