@@ -1,42 +1,54 @@
-import warnings  # warnings 모듈 import
-
-# DeprecationWarning 무시
-warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-
 from django.shortcuts import render
-from rest_framework.views import APIView  # DRF에서 제공하는 기본 APIView 클래스
-from rest_framework.response import Response  # 클라이언트에게 응답을 보내는 클래스
-from rest_framework import status  # HTTP 상태 코드를 관리하는 클래스
-from .link import chatbot_response  # link.py에서 AI 응답을 생성하는 함수를 가져옴
-from .calorie_helper import calculate_calories  # 칼로리 계산 함수 호출
-from .KJK_data_collect import collect_recipe_data  # 데이터 수집 함수 호출
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from .models import Recipe
+from .serializers import RecipeSerializer
+from langchain_community.vectorstores import Chroma
+from langchain_openai import OpenAIEmbeddings
+import os
 
-class ChatBotAPIView(APIView):
+
+class RecipeListCreateView(ListCreateAPIView):
     """
-    사용자가 입력한 메시지에 대해 AI가 응답을 생성하는 API
-
+    요리 데이터를 조회하거나 새 데이터를 생성하는 API (CRUD)
     """
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
 
+
+class RecipeDetailView(RetrieveUpdateDestroyAPIView):
+    """
+    특정 요리 데이터를 조회, 수정, 삭제하는 API (CRUD)
+    """
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+
+
+class RecipeSearchView(APIView):
+    """
+    Chroma 데이터를 활용한 검색 API
+    """
     def post(self, request):
-        """
-        POST 요청을 처리하여 사용자 입력(message)에 대한 AI 응답
-        """
-        # 사용자가 보낸 데이터에서 "message" 키의 값을 가져옴
-        user_input = request.data.get("message", "")
+        # 요청 데이터에서 쿼리와 요리 종류 추출
+        query = request.data.get('query', '')
+        food_type = request.data.get('food_type', '')
 
-        # 만약 message가 비어 있으면 에러 응답을 보냄
-        if not user_input:
-            return Response(
-                {"error": "메시지를 입력해주세요!"},  # 사용자에게 메시지를 입력하라고 알려줌
-                status=status.HTTP_400_BAD_REQUEST  # HTTP 상태 코드 400: 잘못된 요청
-            )
+        if not query or not food_type:
+            return Response({"error": "쿼리와 요리 종류를 입력해주세요."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # AI 챗봇 응답 생성 (link.py의 chatbot_response 함수 사용)
-        response = chatbot_response(user_input)
+        # Chroma 경로 설정
+        persist_directory = os.path.join(os.path.dirname(__file__), f"chroma_{food_type}")
 
-        # 생성된 응답을 클라이언트에게 보냄
-        return Response(
-            {"response": response},  # AI가 생성한 답변을 JSON 형태로 반환
-            status=status.HTTP_200_OK  # HTTP 상태 코드 200: 성공
-        )
+        if not os.path.exists(persist_directory):
+            return Response({"error": f"{food_type}에 해당하는 데이터베이스가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Chroma 검색
+        embeddings = OpenAIEmbeddings()
+        vector_store = Chroma(persist_directory=persist_directory, embedding_function=embeddings)
+        results = vector_store.as_retriever().get_relevant_documents(query)
+
+        # 검색 결과 반환
+        return Response({"results": [doc.page_content for doc in results]})
+

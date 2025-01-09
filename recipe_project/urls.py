@@ -17,10 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include  # include는 다른 URL을 포함시킬 때 사용
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView  # JWT 관련 뷰
+from django.http import JsonResponse  # JsonResponse를 가져오기
+
+def root_view(request):
+    return JsonResponse({"message": "Welcome to Recipe API"}, status=500)
 
 urlpatterns = [
+    path('', root_view, name='root'),
     path('admin/', admin.site.urls),  # 장고 기본 관리자 페이지
-    path('api/auth/', include('accounts.urls')),  # 인증 관련 urls
+    path('api/auth/', include('accounts.urls', namespace='accounts')),  # 인증 관련 urls
     path('api/food/', include('food.urls')),  # 음식 관련 urls
     path('api/chatbot/', include('chatbot.urls')),  # 챗봇 추가
     

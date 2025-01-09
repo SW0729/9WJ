@@ -11,7 +11,14 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
+# .env 파일 로드
+load_dotenv()
+
+# 환경 변수 가져오기
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY2")
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -29,8 +36,6 @@ SECRET_KEY = 'django-insecure-_w05b3zlf)&!mu#u)cz9k(a7oidh&@%l&fm@=8c&9hm29rh+$2
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,7 +50,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt', # jwt 관련 앱
     'accounts', # 이앱은 사용자 관리 앱임
     'food', # recipe레시피 이름이 중복이라 food로 지정 #레시피 모델들을 관리하는 앱
-    'chatbot', # ai챗봇 통합앱앱
+    'chatbot', #ai챗봇 연결앱앱
 ]
 
 REST_FRAMEWORK = {
