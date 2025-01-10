@@ -2415,10 +2415,4 @@ def questions(output):
             question += content
     return question_output
 
-# 함수 호출 시 출력 방지(output을 return하는 과정에서 print와 같이 나오는 상황이 발생하여 썼습니다.)
-# def function_filter(fun): # 아침, 점심, 저녁 함수를 받습니다.
-#     global output
-#     calulator = fun() #여기서 씁니다.
-#     print(output)
-#     return calulator
-morning_calculator()
+morning_calculator() #추후의 변경
