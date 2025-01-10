@@ -1,0 +1,9 @@
+{% extends "frontend/base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="profile-container">
+    <h2>Welcome, {{ user.username }}</h2>
+    <p>Email: {{ user.email }}</p>
+    <a href="/auth/logout/">Logout</a>
+</div>
+{% endblock %}
