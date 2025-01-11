@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpartaChef</title>
+    <!-- HTML 문서의 메타정보와 페이지 제목 설정 -->
+    <style>
+        /* 전체 레이아웃 설정 */
+        body {
+            background: linear-gradient(to bottom, #a8d5a2, #eef2fb); /* 녹색에서 연한 파란색으로 */
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh; /* 화면 전체 높이를 사용 */
+        }
+
+        /* 사이드바 스타일 padding: 콘텐츠와 테두리 사이의 여백*/
+        #sidebar {
+            background-color: #ffc107;
+            width: 250px;
+            padding: 60px 10px 10px; /* 위쪽 패딩을 60px로 설정 */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #sidebar h2 {
+            margin: 0 0 10px 0;  /* margin: 현재 요소 주변의 여백*/
+            color: black; /* Categories 글자색 */
+        }
+
+        .category {
+            background-color: red;
+            padding: 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            /* 카테고리 간 간격 추가 */
+        }
+
+        .selected {
+            background-color: #198754;; /* 선택된 카테고리 강조 */
+            color: black;
+        }
+
+        /* 채팅 내용을 보여주고 사용자 입력을 받는 메인 컨텐츠 스타일링 */
+        #content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column; /* 위에서 아래로 정렬*/
+        }
+
+        /* 헤더 스타일 */
+        #header {
+            background-color: #198754;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between; /* 아이콘과 제목을 동일한 간격으로 배치 */
+            align-items: center;
+        }
+
+        #header h1 {
+            display: flex;
+            align-items: center;
+            margin: 0;
+        }
+
+        #header h1 img {
+            margin-right: 10px;
+        }
+
+        #nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        #nav a {
+            text-decoration: none;
+            color: black;
+        }
+
+        /* 채팅 영역 */
+        #chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #chat #welcome {
+            font-size: 18px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #messages {
+            width: 100%;
+            max-width: 600px;
+            height: 70%;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .message.bot {
+            flex-direction: row;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #7954a1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .message .msg-content {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.bot .msg-content {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+
+        .message.user .msg-content {
+            background-color: #7954a1;
+            color: white;
+        }
+
+        /* 입력창 */
+        #footer {
+            padding: 10px;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #footer input {
+            width: 100%;
+            max-width: 600px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <!-- 기존의 사이드바 -->
+        <h2>Categories</h2>
+        <div class="category selected">한식</div>
+        <div class="category">일식</div>
+        <div class="category">중식</div>
+        <div class="category">양식</div>
+    </div>
+    <div id="content">
+        <div id="header">
+            <h1>
+                <img src="chat-icon.png" alt="">
+                SpartaChef
+            </h1>
+            <div id="nav">
+                <a href="#">홈</a>
+                <a href="#">소개</a>
+                <a href="#">문의</a>
+            </div>
+        </div>
+        <div id="chat">
+            <!-- 채팅 UI -->
+            <div id="welcome">레시피를 알고 싶은 요리를 입력해주세요!</div>
+            <div id="messages"></div>
+        </div>
+        <div id="footer">
+            <input type="text" placeholder="Type your message here...">
+        </div>
+    </div>
+    <script>
+        const messages = document.getElementById('messages');
+        const input = document.querySelector('#footer input');
+        const welcomeMessage = document.getElementById('welcome');
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && input.value.trim() !== '') {
+                // 사용자 메시지 추가
+                addMessage('user', input.value.trim());
+                input.value = '';
+
+                // 봇의 응답 추가 (딜레이 시뮬레이션)
+                setTimeout(() => {
+                    addMessage('bot', '레시피를 검색 중입니다...');
+                }, 1000);
+            }
+        });
+
+        function addMessage(sender, text) {
+            const message = document.createElement('div');
+            message.className = `message ${sender}`;
+            message.innerHTML = `
+                <div class="avatar">${sender === 'user' ? 'U' : 'B'}</div>
+                <div class="msg-content">${text}</div>
+            `;
+            messages.appendChild(message);
+
+            // 메시지 영역 자동 스크롤
+            messages.scrollTop = messages.scrollHeight;
+
+            // 환영 문구 숨기기
+            welcomeMessage.style.display = 'none';
+        }
+    </script>
+    <script> /* 카테고리를 선택할 수 있게 */
+        const categories = document.querySelectorAll('.category');
+        categories.forEach(category => {
+            category.addEventListener('click', () => {
+                document.querySelector('.category.selected')?.classList.remove('selected');
+                category.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>
