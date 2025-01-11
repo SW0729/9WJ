@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <title>Bootstrap Setup</title>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">SpartaChef</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">소개</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <style>
+            /* 전체 페이지 설정 */
+            body, html {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+    
+            /* 애니메이션 효과를 줄 배경 */
+            body {
+                background-image: url('https://mblogthumb-phinf.pstatic.net/MjAyMDEyMTJfMzMg/MDAxNjA3Nzc2MTgwODI3.8SU429uhc5Uhcchl_LgHV72H4IgKfmO5PZu3hbOFFH8g.aWKGB59iknmiEBJXvTmFYpWh4EBMmkk3HwRTDK_ad_cg.JPEG.cutesiwoo/%ED%99%88%ED%8C%8C%ED%8B%B0%EC%9D%8C%EC%8B%9D_%EC%82%AC%EC%A7%84%EB%AA%A8%EC%9D%8C23.JPG?type=w800'); /* 원하는 이미지 URL */
+                background-size: cover; /* 이미지가 화면을 꽉 채우도록 설정 */
+                background-repeat: repeat-x; /* X축으로 반복 */
+                animation: moveLeft 10s linear infinite; /* 애니메이션 적용 */
+            }
+    
+            /* 배경을 왼쪽으로 이동시키는 애니메이션 */
+            @keyframes moveLeft {
+                0% {
+                    background-position: 30vw 0; /* 초기 위치 */
+                }
+                100% {
+                    background-position: 0 0; /* 화면 너비에 맞게 이동 */
+                }
+            }
+        </style>
+    </head>
+<body>
+    <div class="content">
+        <div class="container d-flex justify-content-center align-items-center vh-100">
+            <div class="card p-4 shadow-lg" style="width: 100%; max-width: 500px;">
+                <h2 class="text-center mb-4" style="font-size: 1.8rem;">환영합니다!</h2>
+                <form>
+                    <div class="mb-3">
+                        <label for="email" class="form-label" style="font-size: 1rem;">이메일</label>
+                        <input type="email" class="form-control" id="email" placeholder="이메일을 입력해 주세요" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label" style="font-size: 1rem;">비밀번호</label>
+                        <input type="password" class="form-control" id="password" placeholder="비밀번호를 입력해 주세요" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 py-2" style="font-size: 1.1rem;">Login</button>
+                </form>
+                <hr class="my-4">
+                <div class="text-center">
+                    <p class="mb-0" style="font-size: 0.9rem;">계정이 없으신가요?<br>
+                        <a href="#">계정 생성</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

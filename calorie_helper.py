@@ -2415,4 +2415,4 @@ def questions(output):
             question += content
     return question_output
 
-morning_calculator() #추후의 변경
+dinner_calculator() #추후의 변경
