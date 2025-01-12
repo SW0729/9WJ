@@ -1,0 +1,190 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchHistoryViewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            padding: 10px 20px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-left i {
+            margin-right: 10px;
+        }
+
+        .header-right a {
+            margin-left: 15px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .content {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .search-history {
+            flex: 2;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-history h2 {
+            margin-top: 0;
+        }
+
+        .filter {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .filter input[type="text"] {
+            width: 300px;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .filter button {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .history-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .history-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background-color: #e2e8f0;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .popular-searches {
+            flex: 1;
+            margin-left: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .popular-searches h3 {
+            margin-top: 0;
+        }
+
+        .popular-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .popular-list li {
+            padding: 8px 10px;
+            background-color: #cbd5e1;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #333;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <i>&#128269;</i><strong>SearchHistoryViewer</strong>
+            </div>
+            <div class="header-right">
+                <a href="#">Home</a>
+                <a href="#">Profile Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+        <div class="content">
+            <div class="search-history">
+                <h2>Search History</h2>
+                <div class="filter">
+                    <input type="text" placeholder="Filter by keyword">
+                    <button>Clear All History</button>
+                </div>
+                <ul class="history-list">
+                    <li>
+                        "How to learn TailwindCSS?"
+                        <span>5th Oct 2023</span>
+                    </li>
+                    <li>
+                        "Best restaurants in New York"
+                        <span>3rd Oct 2023</span>
+                    </li>
+                    <li>
+                        "Latest technology trends 2023"
+                        <span>1st Oct 2023</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="popular-searches">
+                <h3>Popular Searches</h3>
+                <ul class="popular-list">
+                    <li>"Top travel destinations 2023"</li>
+                    <li>"Healthy recipes for summer"</li>
+                    <li>"Investment tips for beginners"</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        © 2023 SearchHistoryViewer. All rights reserved.
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+    </div>
+</body>
+</html>
+```
