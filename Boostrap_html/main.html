@@ -5,95 +5,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
-        /* 버튼 스타일 */
-        .btn-custom {
-            background-color: white;
-            color: black;
-            border: none;
-            transition: all 0.3s ease-in-out;
-        }
-        .btn-custom:hover {
-            background-color: white;
-            color: black;
-            transform: scale(1.1);
-        }
-
-        /* 네모난 상자 스타일 */
-        .button-box {
-            background-color: #FB4141;
-            padding: 10px;
-            border: 2px solid #FB4141;
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* 로고 이미지 */
-        .logo-img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            margin-right: 10px;
-        }
-
-        /* 네브바 전체 스타일 */
+        /* 네브바 스타일 */
         .navbar-custom {
             background-color: #5CB338;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .image-container {
-            width: 100vw; /* 화면 너비를 100%로 설정 */
-            height: 100vh; /* 화면 세로를 100%로 설정 */
+        .navbar-brand {
+            color: #F0A500;
+            font-weight: bold;
+            font-size: 1.8rem;
+        }
+
+        .navbar-brand:hover {
+            color: #FFD369;
+            text-decoration: none;
+        }
+
+        .btn-custom {
+            color: #F0A500;
+            background-color: transparent;
+            border: 1px solid #F0A500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #F0A500;
+            color: white;
+        }
+
+        /* 배경 및 섹션 스타일 */
+        .hero-section {
             background-image: url('https://img.freepik.com/free-photo/top-view-tasty-meaty-soup-with-potatoes-dark-desk_140725-76954.jpg?t=st=1736608426~exp=1736612026~hmac=15c8912eb49cb461a030e9564b04906169cc4de36b98beed9b8f2fcf6dafdfc8&w=1480');
             background-size: cover;
             background-position: center;
+            height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            position: relative;
-        }
-        
-        .central-container {
-            display: flex;
             justify-content: center;
-            gap: 100px; /* 두 컨테이너 사이의 간격을 40px로 늘림 */
-            opacity: 0; /* 초기 상태에서 보이지 않도록 설정 */
-            animation: fadeIn 2s forwards; /* 애니메이션 적용 */
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: fadeInDown 2s;
+        }
+
+        .hero-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .btn-learn-more {
+            background-color: #FFD369;
+            color: #5CB338;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-learn-more:hover {
+            background-color: #5CB338;
+            color: white;
+        }
+
+        /* 섹션 스타일 */
+        .section-padding {
+            padding: 50px 15px;
         }
 
         .container-box {
-            padding: 20px;
-            border: 2px solid white;
-            border-radius: 10px;
-            background-color: #f0f0f0;
-            width: 600px; /* 가로 크기를 250px로 늘림 */
-            text-align: center;
+            padding: 30px;
+            border-radius: 15px;
+            position: relative;
+            background: linear-gradient(135deg, #e3e3e3, #c1c1c1, #e3e3e3); /* 은색 그라데이션 */
+            background-size: 200% 200%;
+            background-blend-mode: overlay;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: zoomIn 1s;
+            margin-top: -350px;
         }
 
-        /* 네브바 브랜드 이름 스타일 */
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-        .navbar-brand:hover {
-            text-decoration: none;
-            color: white;
+        .container-box:hover {
+            background: linear-gradient(135deg, #d6d6d6, #bebebe, #a5a5a5);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2), inset 0 -3px 6px rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
         }
 
-        /* fade-in 애니메이션 정의 */
-        @keyframes fadeIn {
-            0% {
+        .feature-icon {
+            font-size: 3rem;
+            color: #5CB338;
+            margin-bottom: 15px;
+        }
+
+        /* 애니메이션 */
+        @keyframes fadeInDown {
+            from {
                 opacity: 0;
-                transform: translateY(20px); /* 아래로부터 슬라이드 */
+                transform: translateY(-20px);
             }
-            100% {
+            to {
                 opacity: 1;
-                transform: translateY(0); /* 원위치로 돌아옴 */
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-text {
+                font-size: 1rem;
             }
         }
     </style>
@@ -102,31 +142,57 @@
     <!-- 네브바 -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
-            <!-- 로고 -->
-            <a class="navbar-brand mx-auto" href="#">
-                <img src="https://via.placeholder.com/50" alt="Logo" class="logo-img">
-                SPA-AChef
-            </a>
-
-            <!-- 로그인 및 회원가입 버튼 상자 -->
-            <div class="button-box">
-                <button class="btn btn-custom">로그인</button>
-                <button class="btn btn-custom">회원가입</button>
+            <a class="navbar-brand" href="#">SPA-AChef</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-custom ms-3">Sign In</button>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
-    <!-- 이미지 컨테이너(배경 이미지 포함) -->
-    <div class="image-container">
-        <!-- 중앙에 배치된 두 개의 컨테이너 -->
-        <div class="central-container">
-            <div class="container-box">
-                <h3>1. 저희는 원하시는 레시피를 모두 제공합니다.</h3>
-                <p>여기에는 첫 번째 내용이 들어갑니다.</p>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="text-center">
+            <h1 class="hero-title">맛봇에 오신것을 환영합니다.</h1>
+            <p class="hero-text">AI를 활용한 이 서비스를 언제 어디서나 찾을 수 있는 레시피를 통해 건강하고 자신만의 식단을 확인하세요!</p>
+            <button class="btn btn-learn-more">로그인</button>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container section-padding">
+        <div class="row text-center">
+            <div class="col-md-6 mb-4">
+                <div class="container-box">
+                    <div class="feature-icon">🍳</div>
+                    <h3 class="fw-bold text-primary">1. AI 챗봇</h3>
+                    <p>사용자의 요청에 따라 다양한 요리 레시피를 추천하고, 필요한 재료와 조리 과정을 안내하여 요리를 더 쉽고 즐겁게 만드세요.</p>
+                </div>
             </div>
-            <div class="container-box">
-                <h3>컨테이너 2</h3>
-                <p>여기에는 두 번째 내용이 들어갑니다.</p>
+            <div class="col-md-6 mb-4">
+                <div class="container-box">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="fw-bold text-primary">2. 칼로리 식단 관리</h3>
+                    <p>각 재료의 칼로리를 분석하고 AI가 맞춤형 식단을 추천하여 체계적인 식단 관리가 가능합니다.</p>
+                </div>
             </div>
         </div>
     </div>
