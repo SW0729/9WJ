@@ -5,36 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
-        /* 네브바 스타일 */
+        /* Refined Navbar Styles */
         .navbar-custom {
-            background-color: #5CB338;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #2C3E50;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
         }
 
         .navbar-brand {
-            color: #F0A500;
+            color: #F39C12;
             font-weight: bold;
-            font-size: 1.8rem;
+            font-size: 2rem;
         }
 
         .navbar-brand:hover {
-            color: #FFD369;
+            color: #F1C40F;
             text-decoration: none;
         }
 
+        .navbar-nav .nav-link {
+            color: #ECF0F1 !important;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #F39C12 !important;
+        }
+
         .btn-custom {
-            color: #F0A500;
+            color: #F39C12;
             background-color: transparent;
-            border: 1px solid #F0A500;
+            border: 1px solid #F39C12;
             transition: all 0.3s ease;
         }
 
         .btn-custom:hover {
-            background-color: #F0A500;
+            background-color: #F39C12;
             color: white;
         }
 
-        /* 배경 및 섹션 스타일 */
+        /* Hero Section */
         .hero-section {
             background-image: url('https://img.freepik.com/free-photo/top-view-tasty-meaty-soup-with-potatoes-dark-desk_140725-76954.jpg?t=st=1736608426~exp=1736612026~hmac=15c8912eb49cb461a030e9564b04906169cc4de36b98beed9b8f2fcf6dafdfc8&w=1480');
             background-size: cover;
@@ -45,10 +53,11 @@
             justify-content: center;
             color: white;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
 
         .hero-title {
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             font-weight: bold;
             margin-bottom: 20px;
             animation: fadeInDown 2s;
@@ -60,8 +69,8 @@
         }
 
         .btn-learn-more {
-            background-color: #FFD369;
-            color: #5CB338;
+            background-color: #F1C40F;
+            color: #2C3E50;
             border-radius: 50px;
             padding: 12px 30px;
             font-size: 1rem;
@@ -70,40 +79,38 @@
         }
 
         .btn-learn-more:hover {
-            background-color: #5CB338;
+            background-color: #2C3E50;
             color: white;
         }
 
-        /* 섹션 스타일 */
+        /* Section Styles */
         .section-padding {
-            padding: 50px 15px;
+            padding: 70px 15px;
         }
 
         .container-box {
-            padding: 30px;
+            padding: 40px;
             border-radius: 15px;
-            position: relative;
-            background: linear-gradient(135deg, #e3e3e3, #c1c1c1, #e3e3e3); /* 은색 그라데이션 */
-            background-size: 200% 200%;
-            background-blend-mode: overlay;
+            background: linear-gradient(135deg, #bdc3c7, #ecf0f1);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.5);
+            position: relative;
             animation: zoomIn 1s;
-            margin-top: -350px;
+            margin-top: -400px;
+            transition: all 0.3s ease;
         }
 
         .container-box:hover {
-            background: linear-gradient(135deg, #d6d6d6, #bebebe, #a5a5a5);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2), inset 0 -3px 6px rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #aab7b8, #f4f6f6);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
         .feature-icon {
             font-size: 3rem;
-            color: #5CB338;
+            color: #16A085;
             margin-bottom: 15px;
         }
 
-        /* 애니메이션 */
+        /* Animations */
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -126,7 +133,7 @@
             }
         }
 
-        /* 반응형 디자인 */
+        /* Responsive Design */
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
@@ -135,11 +142,15 @@
             .hero-text {
                 font-size: 1rem;
             }
+
+            .container-box {
+                padding: 25px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 네브바 -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">SPA-AChef</a>
@@ -149,16 +160,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Home</a>
+                        <a class="nav-link" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">About</a>
+                        <a class="nav-link" href="#">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Features</a>
+                        <a class="nav-link" href="#">Features</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Contact</a>
+                        <a class="nav-link" href="#">Contact</a>
                     </li>
                     <li class="nav-item">
                         <button class="btn btn-custom ms-3">Sign In</button>
@@ -172,7 +183,7 @@
     <div class="hero-section">
         <div class="text-center">
             <h1 class="hero-title">맛봇에 오신것을 환영합니다.</h1>
-            <p class="hero-text">AI를 활용한 이 서비스를 언제 어디서나 찾을 수 있는 레시피를 통해 건강하고 자신만의 식단을 확인하세요!</p>
+            <p class="hero-text">AI를 활용한 이 서비스를 언제 어디서나 찾을 수 있는 레시피를 통해 건강하고 자신만의 식단을 관리하세요.</p>
             <button class="btn btn-learn-more">로그인</button>
         </div>
     </div>

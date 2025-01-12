@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpartaChef</title>
+    <style>
+        /* 전체 레이아웃 설정 */
+        body {
+            background-image: url('https://img.freepik.com/free-photo/top-view-tasty-meaty-soup-with-potatoes-dark-desk_140725-76954.jpg?t=st=1736608426~exp=1736612026~hmac=15c8912eb49cb461a030e9564b04906169cc4de36b98beed9b8f2fcf6dafdfc8&w=1480');
+            background-size: cover; /* 이미지를 화면에 꽉 채우기 */
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 사이드바 스타일 */
+        #sidebar {
+            background-color: #343a40; /* 어두운 색 배경 */
+            color: white;
+            width: 250px;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        #sidebar h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #f8f9fa;
+        }
+
+        .category {
+            background-color: #495057;
+            padding: 12px 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            text-align: left;
+            font-size: 18px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .category:hover {
+            background-color: #198754;
+        }
+
+        .selected {
+            background-color: #198754;
+            color: #fff;
+        }
+
+        /* 메인 콘텐츠 스타일 */
+        #content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            margin-left: 250px;
+            padding: 20px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        #header {
+            background-color: #198754;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #header h1 {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            font-size: 24px;
+            color: white;
+        }
+
+        #header h1 img {
+            margin-right: 15px;
+            width: 40px;
+            height: 40px;
+        }
+
+        #nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        #nav a {
+            text-decoration: none;
+            color: #f8f9fa;
+            font-size: 18px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        #nav a:hover {
+            color: #198754;
+        }
+
+        #chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        #messages {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .message.bot .msg-content {
+            background-color: #e9ecef;
+            color: #495057;
+            border-radius: 15px;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        .message.user .msg-content {
+            background-color: #198754;
+            color: white;
+            border-radius: 15px;
+            padding: 12px;
+            font-size: 16px;
+            max-width: 80%;
+            text-align: right;
+        }
+
+        #footer {
+            padding: 10px;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid #ddd;
+        }
+
+        #footer input {
+            width: 100%;
+            max-width: 600px;
+            padding: 12px 20px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+            transition: border 0.3s ease;
+        }
+
+        #footer input:focus {
+            border-color: #198754;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <h2>Categories</h2>
+        <div class="category selected">한식</div>
+        <div class="category">일식</div>
+        <div class="category">중식</div>
+        <div class="category">양식</div>
+    </div>
+    <div id="content">
+        <div id="header">
+            <h1>
+                <img src="chat-icon.png" alt="">
+                SpartaChef
+            </h1>
+            <div id="nav">
+                <a href="#">홈</a>
+                <a href="#">소개</a>
+                <a href="#">문의</a>
+            </div>
+        </div>
+        <div id="chat">
+            <div id="welcome">레시피를 알고 싶은 요리를 입력해주세요!</div>
+            <div id="messages"></div>
+        </div>
+        <div id="footer">
+            <input type="text" placeholder="Type your message here...">
+        </div>
+    </div>
+    <script>
+        const messages = document.getElementById('messages');
+        const input = document.querySelector('#footer input');
+        const welcomeMessage = document.getElementById('welcome');
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && input.value.trim() !== '') {
+                addMessage('user', input.value.trim());
+                input.value = '';
+
+                setTimeout(() => {
+                    addMessage('bot', '레시피를 검색 중입니다...');
+                }, 1000);
+            }
+        });
+
+        function addMessage(sender, text) {
+            const message = document.createElement('div');
+            message.className = `message ${sender}`;
+            message.innerHTML = `
+                <div class="msg-content">${text}</div>
+            `;
+            messages.appendChild(message);
+
+            messages.scrollTop = messages.scrollHeight;
+
+            welcomeMessage.style.display = 'none';
+        }
+
+        const categories = document.querySelectorAll('.category');
+        categories.forEach(category => {
+            category.addEventListener('click', () => {
+                document.querySelector('.category.selected')?.classList.remove('selected');
+                category.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>
