@@ -33,5 +33,9 @@ urlpatterns = [
     # JWT 관련 URL 추가
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # JWT 발급
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # JWT 리프레시
+
+
+
+
 ]
 

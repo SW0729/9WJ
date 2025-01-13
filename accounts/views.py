@@ -15,6 +15,26 @@ from .serializers import ( # 직렬할 애들 가져오기
     CustomTokenObtainPairSerializer,
 )
 
+from django.shortcuts import render # 장고에서 render 함수
+
+# 로그인 페이지
+def login_view(request):
+    return render(request, 'login.html')# login.html  템플릿을 렌더링 
+
+# 메인 페이지
+def main_view(request):
+    return render(request, 'main.html') # main.html 랜더링
+
+# 프로필 페이지
+def profile_view(request):
+    return render(request, 'profile.html') # profile.html 랜더링
+
+# 회원가입 페이지
+def signup_view(request):
+    return render(request, 'signup.html') # signup,html 랜더링
+
+
+
 # 회원가입
 class RegisterView(APIView):
     """

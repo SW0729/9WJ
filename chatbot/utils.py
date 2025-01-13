@@ -14,12 +14,12 @@ openai.api_key = os.getenv("OPENAI_API_KEY2")  # 환경 변수에서 키 가져�
 if not openai.api_key:
     raise ValueError("OpenAI API 키가 설정되지 않았습니다. 환경 변수를 확인하세요.")
 
-def load_kjk_data(json_path, food_type):
+def load_kjk_data(json_path, country_food):
     """
     JSON 파일과 요리 종류를 받아 데이터를 Chroma 데이터베이스에 저장.
     """
     # Chroma 데이터베이스 저장 경로
-    persist_directory = os.path.join(os.path.dirname(__file__), f"chroma_{food_type}")
+    persist_directory = os.path.join(os.path.dirname(__file__), f"chroma_{country_food}")
 
     # Embeddings 객체 생성
     embeddings = OpenAIEmbeddings()
@@ -33,7 +33,7 @@ def load_kjk_data(json_path, food_type):
         return
 
     # Document 객체 생성
-    documents = [Document(page_content=item) for item in food_data]
+    documents = [Document(page_content=item) for item in country_food]
 
     # Chroma 데이터베이스 업데이트 또는 생성
     if os.path.exists(persist_directory):
@@ -43,7 +43,7 @@ def load_kjk_data(json_path, food_type):
         )
         vector_store.add_documents(documents)
         vector_store.persist()
-        print(f"{food_type} 데이터가 기존 Chroma 데이터베이스에 추가되었습니다.")
+        print(f"{country_food} 데이터가 기존 Chroma 데이터베이스에 추가되었습니다.")
     else:
         vector_store = Chroma.from_documents(
             documents=documents,
@@ -51,4 +51,4 @@ def load_kjk_data(json_path, food_type):
             persist_directory=persist_directory,
         )
         vector_store.persist()
-        print(f"{food_type} 데이터로 새 Chroma 데이터베이스가 생성되었습니다.")
+        print(f"{country_food} 데이터로 새 Chroma 데이터베이스가 생성되었습니다.")
