@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include  # include는 다른 URL을 포함시킬 때 사용
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView  # JWT 관련 뷰
-from django.http import JsonResponse  # JsonResponse를 가져오기
+from django.http import JsonResponse  # json형식으로 응답위한 도구
 
 def root_view(request):
     return JsonResponse({"message": "Welcome to Recipe API"}, status=500)
