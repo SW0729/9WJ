@@ -5,250 +5,223 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpartaChef</title>
     <style>
-        /* 전체 레이아웃 설정 */
         body {
-            background-image: url('https://img.freepik.com/free-photo/top-view-tasty-meaty-soup-with-potatoes-dark-desk_140725-76954.jpg?t=st=1736608426~exp=1736612026~hmac=15c8912eb49cb461a030e9564b04906169cc4de36b98beed9b8f2fcf6dafdfc8&w=1480');
-            background-size: cover; /* 이미지를 화면에 꽉 채우기 */
+            background-image: url('https://img.freepik.com/free-photo/top-view-tasty-dinner-with-meat-potatoes-served-with-green-black-plate-pepper-garlic-oil-bottle-cutlery-set_179666-19991.jpg?t=st=1736732172~exp=1736735772~hmac=fe500d7cae7d6fd417ffa0813fc281ab7a29be2f0079149e17506e389ee8d9fb&w=1480');
+            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             margin: 0;
             font-family: 'Arial', sans-serif;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* 사이드바 스타일 */
-        #sidebar {
-            background-color: #343a40; /* 어두운 색 배경 */
-            color: white;
-            width: 250px;
-            padding: 40px 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            height: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-        }
-
-        #sidebar h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
-            font-weight: 700;
             color: #f8f9fa;
-        }
-
-        .category {
-            background-color: #495057;
-            padding: 12px 20px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            width: 100%;
-            text-align: left;
-            font-size: 18px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .category:hover {
-            background-color: #198754;
-        }
-
-        .selected {
-            background-color: #198754;
-            color: #fff;
-        }
-
-        /* 메인 콘텐츠 스타일 */
-        #content {
-            flex-grow: 1;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            margin-left: 250px;
-            padding: 20px;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
         }
 
-        #header {
-            background-color: #198754;
-            padding: 15px 30px;
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        #header h1 {
+        header h1 {
+            font-size: 28px;
+            color: #ffc107;
             display: flex;
             align-items: center;
-            margin: 0;
-            font-size: 24px;
-            color: white;
         }
 
-        #header h1 img {
+        header h1 img {
             margin-right: 15px;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
         }
 
-        #nav {
+        nav {
             display: flex;
             gap: 20px;
         }
 
-        #nav a {
+        nav a {
             text-decoration: none;
             color: #f8f9fa;
             font-size: 18px;
-            font-weight: 600;
             transition: color 0.3s ease;
         }
 
-        #nav a:hover {
-            color: #198754;
+        nav a:hover {
+            color: #ffc107;
         }
 
-        #chat {
+        main {
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 30px;
-            background-color: #f1f1f1;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            margin: 20px;
+            overflow: hidden;
         }
 
-        #messages {
+        main h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        main .categories {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .category-btn {
+            background-color: #495057;
+            color: white;
+            padding: 15px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .category-btn:hover {
+            background-color: #198754;
+            transform: scale(1.05);
+        }
+
+        .category-btn.active {
+            background-color: #ffc107;
+            color: black;
+            transform: scale(1.1);
+        }
+
+        .chat-container {
             width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 1400px;
+            height: 600px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
+            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .chat-container::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
         }
 
         .message {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .message.bot .msg-content {
-            background-color: #e9ecef;
-            color: #495057;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
             border-radius: 15px;
-            padding: 12px;
             font-size: 16px;
         }
 
-        .message.user .msg-content {
-            background-color: #198754;
-            color: white;
-            border-radius: 15px;
-            padding: 12px;
-            font-size: 16px;
-            max-width: 80%;
-            text-align: right;
+        .message.user {
+            align-self: flex-end;
+            background-color: #ffc107;
+            color: black;
         }
 
-        #footer {
-            padding: 10px;
-            background-color: #fff;
+        .message.bot {
+            align-self: flex-start;
+        }
+
+        footer {
             display: flex;
             justify-content: center;
             align-items: center;
-            border-top: 1px solid #ddd;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.8);
         }
 
-        #footer input {
+        footer input {
             width: 100%;
             max-width: 600px;
-            padding: 12px 20px;
-            border: 1px solid #ccc;
-            border-radius: 25px;
+            padding: 15px 20px;
             font-size: 16px;
+            border: 2px solid #495057;
+            border-radius: 25px;
             outline: none;
-            box-sizing: border-box;
-            transition: border 0.3s ease;
+            transition: border-color 0.3s ease;
         }
 
-        #footer input:focus {
-            border-color: #198754;
+        footer input:focus {
+            border-color: #ffc107;
         }
-
     </style>
 </head>
 <body>
-    <div id="sidebar">
-        <h2>Categories</h2>
-        <div class="category selected">한식</div>
-        <div class="category">일식</div>
-        <div class="category">중식</div>
-        <div class="category">양식</div>
-    </div>
-    <div id="content">
-        <div id="header">
-            <h1>
-                <img src="chat-icon.png" alt="">
-                SpartaChef
-            </h1>
-            <div id="nav">
-                <a href="#">홈</a>
-                <a href="#">소개</a>
-                <a href="#">문의</a>
-            </div>
+    <header>
+        <h1>
+            <img src="chat-icon.png" alt="Logo">
+            SpartaChef
+        </h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Choose a Cuisine</h2>
+        <div class="categories">
+            <button class="category-btn">Korean</button>
+            <button class="category-btn">Japanese</button>
+            <button class="category-btn">Chinese</button>
+            <button class="category-btn">Western</button>
         </div>
-        <div id="chat">
-            <div id="welcome">레시피를 알고 싶은 요리를 입력해주세요!</div>
-            <div id="messages"></div>
+        <div class="chat-container" id="chat-container">
+            <div class="message bot">Welcome! Please type a dish you want a recipe for.</div>
         </div>
-        <div id="footer">
-            <input type="text" placeholder="Type your message here...">
-        </div>
-    </div>
+    </main>
+    <footer>
+        <input type="text" placeholder="Type your message here..." id="user-input">
+    </footer>
     <script>
-        const messages = document.getElementById('messages');
-        const input = document.querySelector('#footer input');
-        const welcomeMessage = document.getElementById('welcome');
+        const chatContainer = document.getElementById('chat-container');
+        const userInput = document.getElementById('user-input');
+        const categoryButtons = document.querySelectorAll('.category-btn');
 
-        input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && input.value.trim() !== '') {
-                addMessage('user', input.value.trim());
-                input.value = '';
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && userInput.value.trim() !== '') {
+                addMessage('user', userInput.value.trim());
+                userInput.value = '';
 
                 setTimeout(() => {
-                    addMessage('bot', '레시피를 검색 중입니다...');
+                    addMessage('bot', 'Searching for the recipe...');
                 }, 1000);
             }
+        });
+
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                button.classList.toggle('active');
+            });
         });
 
         function addMessage(sender, text) {
             const message = document.createElement('div');
             message.className = `message ${sender}`;
-            message.innerHTML = `
-                <div class="msg-content">${text}</div>
-            `;
-            messages.appendChild(message);
-
-            messages.scrollTop = messages.scrollHeight;
-
-            welcomeMessage.style.display = 'none';
+            message.textContent = text;
+            chatContainer.appendChild(message);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
-
-        const categories = document.querySelectorAll('.category');
-        categories.forEach(category => {
-            category.addEventListener('click', () => {
-                document.querySelector('.category.selected')?.classList.remove('selected');
-                category.classList.add('selected');
-            });
-        });
     </script>
 </body>
 </html>
