@@ -24,7 +24,7 @@ class RecipeSearchSerializer(serializers.Serializer):
     # 검색어 (필수)
     query = serializers.CharField(required=True, max_length=200)
     # 요리 종류 (필수) - 선택 가능한 값만 사용 가능
-    country_food = serializers.ChoiceField(choices=["korean", "japanese", "western", "chinese"], required=True)
+    country_food = serializers.ChoiceField(choices=["한식", "일식", "중식", "양식식"], required=True)
 
 
 # 모든 레시피를 가져오거나 새 레시피를 만드는 API
@@ -60,6 +60,8 @@ class RecipeSearchView(APIView):
         query = serializer.validated_data['query']
         country_food  = serializer.validated_data['country_food']
 
+        print(query,country_food)
+
         try:
             # `recipe_finder`를 호출하여 결과 얻기
             results = recipe_finder(query, country_food)
@@ -78,3 +80,4 @@ class RecipeSearchView(APIView):
         except Exception as e:
             # 기타 예외 처리
             return Response({"error": f"서버 오류: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        

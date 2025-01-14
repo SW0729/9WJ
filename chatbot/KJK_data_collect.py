@@ -10,7 +10,7 @@ import json
 import os
 import openai
 from openai import OpenAI
-openai.api_key = os.getenv("OPENAI_API_KEY2")
+openai.api_key = "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"
 import warnings
 warnings.filterwarnings(action = 'ignore')
 import subprocess
@@ -100,9 +100,13 @@ def hybrid_search(query, vector_store, documents, top_k=1):
 course = ['한식', '양식', '중식', '일식']
 # country_food = input('정하세요: ').replace(" ", "_").replace("&", "_")
 def recipe_finder(query, country_food=None):
+    current_path = os.getcwd()
+    country_food = country_food.replace('"', '')
+    country_food = country_food.replace("\"", '')
     if country_food not in course:
         print('다시 선택해 주세요')
-    persist_directory=f"chroma_{country_food}"
+    persist_directory=f"{current_path}/chatbot/chroma_{country_food}"
+    print(persist_directory)
     if os.path.exists(persist_directory):
         vector_store = Chroma(
             persist_directory=persist_directory,

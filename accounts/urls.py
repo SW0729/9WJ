@@ -23,7 +23,7 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # 사용자 프로필(마이페이지) 조회
-    path('profile/', ProfileView.as_view(), name='profile'),
+    path('profile1/', ProfileView.as_view(), name='profile'),
 
     # 사용자 로그아웃
     path('logout/', LogoutView.as_view(), name='logout'),
