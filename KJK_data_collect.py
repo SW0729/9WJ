@@ -1,6 +1,5 @@
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain.callbacks.manager import CallbackManager
-from langchain.chains import RetrievalQA
 from langchain_community.vectorstores import Chroma
 from langchain.docstore.document import Document
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
@@ -13,7 +12,6 @@ from openai import OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY2")
 import warnings
 warnings.filterwarnings(action = 'ignore')
-import subprocess
 #----------------------------------------------------------------------
 korea_food = 'C:\\Users\\kevinkim\\Desktop\\recipes\\한식.json'
 western_food = 'C:\\Users\\kevinkim\\Desktop\\recipes\\양식.json'
@@ -83,7 +81,7 @@ def filter_text(text):
     text = re.sub(r'[^a-zA-Z가-힣\s]', '', text)
     text = text.lower()
     return text
-query = "Kimbob recipe" #추후 계속 질문을 받는식으로 변경 가능
+query = "까르보나라" #추후 계속 질문을 받는식으로 변경 가능
 #----------------------------------------------------------------------
 def hybrid_search(query, vector_store, documents, top_k=1):
     # query_embedding = embeddings.embed_query(query)

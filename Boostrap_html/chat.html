@@ -173,7 +173,7 @@
             SpartaChef
         </h1>
         <nav>
-            <a href="#">Home</a>
+            <a href="url">홈</a>
             <a href="#">About</a>
             <a href="#">Contact</a>
         </nav>
@@ -181,46 +181,82 @@
     <main>
         <h2>Choose a Cuisine</h2>
         <div class="categories">
-            <button class="category-btn">Korean</button>
-            <button class="category-btn">Japanese</button>
-            <button class="category-btn">Chinese</button>
-            <button class="category-btn">Western</button>
+            <button class="category-btn">한식</button>
+            <button class="category-btn">일식</button>
+            <button class="category-btn">중식</button>
+            <button class="category-btn">양식</button>
         </div>
         <div class="chat-container" id="chat-container">
-            <div class="message bot">Welcome! Please type a dish you want a recipe for.</div>
+            <div class="message bot">안녕하세요! 원하시는 음식을 입력하면 레시피가 나옵니다!</div>
         </div>
     </main>
     <footer>
-        <input type="text" placeholder="Type your message here..." id="user-input">
+        <input type="text" placeholder="음식의 이름을 입력하세요!" id="user-input">
     </footer>
     <script>
         const chatContainer = document.getElementById('chat-container');
         const userInput = document.getElementById('user-input');
         const categoryButtons = document.querySelectorAll('.category-btn');
-
-        userInput.addEventListener('keypress', (e) => {
+    
+        // API URL (DRF의 엔드포인트 URL)
+        const apiUrl = '/api/chat/';
+    
+        // 사용자 입력 핸들러
+        userInput.addEventListener('keypress', async (e) => {
             if (e.key === 'Enter' && userInput.value.trim() !== '') {
-                addMessage('user', userInput.value.trim());
+                const userMessage = userInput.value.trim();
+                addMessage('user', userMessage); // 사용자 메시지 추가
                 userInput.value = '';
-
-                setTimeout(() => {
-                    addMessage('bot', 'Searching for the recipe...');
-                }, 1000);
+    
+                // 로딩 메시지 표시
+                addMessage('bot', '검색 중입니다... 조금만 기다려 주세요');
+    
+                // 서버로 메시지 전송 및 응답 처리
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ message: userMessage }),
+                    });
+    
+                    if (response.ok) {
+                        const data = await response.json();
+                        const botMessage = data.reply || '답변을 불러오는 데 실패했습니다.';
+                        updateLastBotMessage(botMessage); // 로딩 메시지 대체
+                    } else {
+                        updateLastBotMessage('서버 응답에 실패했습니다.');
+                    }
+                } catch (error) {
+                    updateLastBotMessage('오류가 발생했습니다. 나중에 다시 시도해 주세요.');
+                    console.error('Error:', error);
+                }
             }
         });
-
+    
+        // 카테고리 버튼 활성화 토글
         categoryButtons.forEach(button => {
             button.addEventListener('click', () => {
                 button.classList.toggle('active');
             });
         });
-
+    
+        // 메시지 추가 함수
         function addMessage(sender, text) {
             const message = document.createElement('div');
             message.className = `message ${sender}`;
             message.textContent = text;
             chatContainer.appendChild(message);
             chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    
+        // 마지막 봇 메시지 업데이트 함수 (로딩 메시지 대체)
+        function updateLastBotMessage(text) {
+            const messages = chatContainer.querySelectorAll('.message.bot');
+            if (messages.length > 0) {
+                messages[messages.length - 1].textContent = text;
+            }
         }
     </script>
 </body>
