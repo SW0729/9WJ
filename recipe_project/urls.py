@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include  # include는 다른 URL을 포함시킬 때 사용
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView  # JWT 관련 뷰
 from django.http import JsonResponse  # json형식으로 응답위한 도구
+from accounts.views import login_view,main_view,profile_view,signup_view
+from chatbot.views import chatbot_view
 
 def root_view(request):
     return JsonResponse({"message": "Welcome to Recipe API"}, status=500)
@@ -35,6 +37,17 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # JWT 리프레시
 
 
+
+    #'login/' 경로로 들어오면 login_view를 실행
+    path('login/', login_view, name='login'),  
+    # 'main/' 경로로 들어오면 main_view를 실행
+    path('main/', main_view, name='main'),     
+    # 'profile/' 경로로 들어오면 profile_view를 실행
+    path('profile/', profile_view, name='profile'), 
+    # 'signup/' 경로로 들어오면 signup_view를 실행
+    path('signup/', signup_view, name='signup'),
+     
+    path('chatbot/', chatbot_view, name='chatbot'),
 
 
 ]

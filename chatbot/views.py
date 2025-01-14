@@ -68,7 +68,7 @@ class RecipeSearchView(APIView):
 
             # 검색 결과가 없을 경우 처리
             if not results:
-                return Response({"message": "검색 결과가 없습니다. 다른 키워드로 시도해보세요."}, status=status.HTTP_200_OK)
+                return Response({"results": "검색 결과가 없습니다. 다른 키워드로 시도해보세요."}, status=status.HTTP_200_OK)
 
             # 성공적으로 결과 반환
             return Response({"results": results}, status=status.HTTP_200_OK)

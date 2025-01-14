@@ -31,12 +31,5 @@ urlpatterns = [
     path('tags/', TagListView.as_view(), name='tag-list'),  
 
 
-    # 'login/' 경로로 들어오면 login_view를 실행
-    path('login/', views.login_view, name='login'),  
-    # 'main/' 경로로 들어오면 main_view를 실행
-    path('main/', views.main_view, name='main'),     
-    # 'profile/' 경로로 들어오면 profile_view를 실행
-    path('profile/', views.profile_view, name='profile'), 
-    # 'signup/' 경로로 들어오면 signup_view를 실행
-    path('signup/', views.signup_view, name='signup'),  
+     
 ]

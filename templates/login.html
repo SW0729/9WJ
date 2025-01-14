@@ -11,16 +11,16 @@
                     <!-- 이미지 -->
                     <img src="C:\\Users\\kevinkim\\Downloads\\sparta_logo.png" alt="Logo" style="height: 50px; margin-right: 10px;">
                     <!-- 제목 -->
-                    <p class="fw-bold mb-0" style="font-size: 2rem; color: white;">SPA-Chef</p>
+                    <p class="fw-bold mb-0" style="font-size: 2rem; color: white;">맛봇</p>
                 </div>
                 <!-- 네비게이션 링크 -->
                 <div class="collapse navbar-collapse mt-3" id="navbarNav">
                     <ul class="navbar-nav d-flex flex-row justify-content-center">
                         <li class="nav-item mx-3">
-                            <a class="nav-link" href="#" style="color: white; transition: background-color 0.3s;">소개</a>
+                            <a class="nav-link" href="/main" style="color: white; transition: background-color 0.3s;">소개</a>
                         </li>
                         <li class="nav-item mx-3">
-                            <a class="nav-link" href="#" style="color: white; transition: background-color 0.3s;">메인</a>
+                            <a class="nav-link" href="/main" style="color: white; transition: background-color 0.3s;">메인</a>
                         </li>
                     </ul>
                 </div>
@@ -70,7 +70,7 @@
             <div class="card p-4 shadow-lg" style="width: 100%; max-width: 500px;">
                 <h2 class="text-center mb-4" style="font-size: 1.8rem;">환영합니다!</h2>
                 <h5 class = "text-start mb-4">오늘도 맛있는 한끼!</h5>
-                <form>
+                <form id="loginForm">
                     <div class="mb-3">
                         <label for="email" class="form-label" style="font-size: 1rem;">이메일</label>
                         <input type="email" class="form-control" id="email" placeholder="이메일을 입력해 주세요" required>
@@ -85,13 +85,46 @@
                 <button onclick="window.history.back()" class="btn btn-success w-100 py-2" style="font-size: 1.1rem;">뒤로가기</button>
                 <hr class="my-4">
                 <div class="text-center">
-                    <p class="mb-0" style="font-size: 0.9rem;">계정이 없으신가요?<br>
-                        <a href="#">계정 생성</a>
+                    <p class="mb-0" style="font-size: 0.9rem;" id = 'signup'>계정이 없으신가요?<br>
+                        <a href="/signup">계정 생성</a>
                     </p>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // 폼 제출 기본 동작을 막음
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+    
+            // 로그인 API 요청
+            fetch('http://127.0.0.1:8000/api/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.access) {  // 로그인 성공
+                    alert('로그인에 성공했습니다! 환영합니다.');
+                    localStorage.setItem('access_token', data.access);  // 토큰 저장
+                    window.location.href = '/chatbot';  // 로그인 후 리디렉션할 페이지
+                    
+                } else {  // 로그인 실패
+                    alert('이메일 또는 비밀번호를 다시 확인해주세요.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('로그인 중 문제가 발생했습니다. 다시 시도해주세요.');
+            });
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
