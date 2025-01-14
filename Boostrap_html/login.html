@@ -11,16 +11,16 @@
                     <!-- 이미지 -->
                     <img src="C:\\Users\\kevinkim\\Downloads\\sparta_logo.png" alt="Logo" style="height: 50px; margin-right: 10px;">
                     <!-- 제목 -->
-                    <p class="fw-bold mb-0" style="font-size: 2rem; color: white;">SPA-Chef</p>
+                    <p class="fw-bold mb-0" style="font-size: 2rem; color: white;">맛봇</p>
                 </div>
                 <!-- 네비게이션 링크 -->
                 <div class="collapse navbar-collapse mt-3" id="navbarNav">
                     <ul class="navbar-nav d-flex flex-row justify-content-center">
                         <li class="nav-item mx-3">
-                            <a class="nav-link" href="{% url 'about' %}" style="color: white; transition: background-color 0.3s;">소개</a>
+                            <a class="nav-link" href="/main" style="color: white; transition: background-color 0.3s;">소개</a>
                         </li>
                         <li class="nav-item mx-3">
-                            <a class="nav-link" href="{% url 'main' %}" style="color: white; transition: background-color 0.3s;">메인</a>
+                            <a class="nav-link" href="/main" style="color: white; transition: background-color 0.3s;">메인</a>
                         </li>
                     </ul>
                 </div>
@@ -86,7 +86,7 @@
                 <hr class="my-4">
                 <div class="text-center">
                     <p class="mb-0" style="font-size: 0.9rem;" id = 'signup'>계정이 없으신가요?<br>
-                        <a href="/register">계정 생성</a>
+                        <a href="/signup">계정 생성</a>
                     </p>
                 </div>
             </div>
@@ -113,7 +113,8 @@
                 if (data.access) {  // 로그인 성공
                     alert('로그인에 성공했습니다! 환영합니다.');
                     localStorage.setItem('access_token', data.access);  // 토큰 저장
-                    window.location.href = '/home';  // 로그인 후 리디렉션할 페이지
+                    window.location.href = '/chatbot';  // 로그인 후 리디렉션할 페이지
+                    
                 } else {  // 로그인 실패
                     alert('이메일 또는 비밀번호를 다시 확인해주세요.');
                 }
