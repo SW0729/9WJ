@@ -17,7 +17,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
 
     # 사용자 로그인(JWT 토큰 생성)
-    path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
 
     # JWT 토큰 갱신
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

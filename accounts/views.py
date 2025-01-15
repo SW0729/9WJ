@@ -53,7 +53,17 @@ class RegisterView(APIView):
 # 로그인 (JWT)
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer # 유저이름과 비밀번호 jwt 토큰 발급
-
+    
+    # def post(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     try:
+    #         serializer.is_valid(raise_exception=True)
+    #         # 기본 데이터를 가져오고 필요한 응답 데이터 추가
+    #         response_data = serializer.validated_data
+    #         response_data['custom_message'] = "로그인 성공!"
+    #         return Response(response_data, status=200)
+    #     except Exception as e:
+    #         return Response({"error": "로그인 실패!"}, status=400)
 
 # 로그아웃
 class LogoutView(APIView):

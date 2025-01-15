@@ -25,7 +25,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 # JWT 커스텀 토큰 시리얼라이저
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
-    JWT 토큰에 사용자 이름, 이메일 정보를 추가
+    이메일과 비밀번호를 사용하여 JWT 토큰 발급
     """
     @classmethod
     def get_token(cls, user):
@@ -35,13 +35,24 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
     def validate(self, attrs):
-        data = super().validate(attrs)  # 기본 인증 로직 수행
-        user = self.user
+        # 기존 validate 메서드 호출
+        data = super().validate(attrs)
 
-        if not user.is_active:  # 비활성화된 계정 확인
-            raise serializers.ValidationError("사용자 계정이 비활성화되었습니다.")
+        # 이메일을 기반으로 사용자 인증
+        email = attrs.get('email', None)
+        password = attrs.get('password', None)
 
-        # 사용자 정보를 반환 데이터에 추가
+        try:
+            # 이메일로 사용자 객체 가져오기
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise serializers.ValidationError({"error": "Invalid email or password"})
+
+        # 비밀번호 확인
+        if not user.check_password(password):
+            raise serializers.ValidationError({"error": "Invalid email or password"})
+
+        # 추가 데이터 반환
         data.update({
             'username': user.username,
             'email': user.email
