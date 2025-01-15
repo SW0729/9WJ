@@ -126,6 +126,7 @@
             <label for="food">Food Name:</label>
             <input type="text" id="food" placeholder="Enter food name">
         </div>
+        
             <div class="checkbox-group">
                 <div class="checkbox-box">
                     <input type="checkbox" id="breakfast" name="time" value="breakfast">
@@ -175,63 +176,64 @@
         });
 
         document.getElementById('analyze-btn').addEventListener('click', function () {
-            const selectedTimes = [];
-            if (document.getElementById('breakfast').checked) {
-                selectedTimes.push('breakfast');
-            }
-            if (document.getElementById('lunch').checked) {
-                selectedTimes.push('lunch');
-            }
-            if (document.getElementById('dinner').checked) {
-                selectedTimes.push('dinner');
-            }
-
             const resultsContainer = document.getElementById('dynamic-results');
             resultsContainer.innerHTML = '';
 
-            if (selectedTimes.length === 0) {
+            if (document.getElementById('lunch').checked) {
+                const morningInputBox = document.createElement('div');
+                morningInputBox.classList.add('form-group');
+
+                const morningLabel = document.createElement('label');
+                morningLabel.innerText = 'What did you eat during Morning?';
+                morningInputBox.appendChild(morningLabel);
+
+                const morningInput = document.createElement('input');
+                morningInput.type = 'text';
+                morningInput.placeholder = 'Enter food consumed during Morning';
+                morningInput.classList.add('dynamic-input');
+                morningInputBox.appendChild(morningInput);
+
+                resultsContainer.appendChild(morningInputBox);
+            }
+
+            if (document.getElementById('dinner').checked) {
+                const morningInputBox = document.createElement('div');
+                morningInputBox.classList.add('form-group');
+
+                const morningLabel = document.createElement('label');
+                morningLabel.innerText = 'What did you eat during Morning?';
+                morningInputBox.appendChild(morningLabel);
+
+                const morningInput = document.createElement('input');
+                morningInput.type = 'text';
+                morningInput.placeholder = 'Enter food consumed during Morning';
+                morningInput.classList.add('dynamic-input');
+                morningInputBox.appendChild(morningInput);
+
+                resultsContainer.appendChild(morningInputBox);
+
+                const lunchInputBox = document.createElement('div');
+                lunchInputBox.classList.add('form-group');
+
+                const lunchLabel = document.createElement('label');
+                lunchLabel.innerText = 'What did you eat during Lunch?';
+                lunchInputBox.appendChild(lunchLabel);
+
+                const lunchInput = document.createElement('input');
+                lunchInput.type = 'text';
+                lunchInput.placeholder = 'Enter food consumed during Lunch';
+                lunchInput.classList.add('dynamic-input');
+                lunchInputBox.appendChild(lunchInput);
+
+                resultsContainer.appendChild(lunchInputBox);
+            }
+
+            if (resultsContainer.innerHTML === '') {
                 const message = document.createElement('p');
                 message.innerText = 'Please select at least one time of intake.';
                 message.style.color = '#ffc107';
                 resultsContainer.appendChild(message);
-                return;
             }
-
-            selectedTimes.forEach(time => {
-                const inputBox = document.createElement('div');
-                inputBox.classList.add('form-group');
-
-                const label = document.createElement('label');
-                label.innerText = `What did you eat before ${time}?`;
-                inputBox.appendChild(label);
-
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.placeholder = `Enter food consumed before ${time}`;
-                input.classList.add('dynamic-input');
-                inputBox.appendChild(input);
-
-                resultsContainer.appendChild(inputBox);
-            });
-
-            const analyzeButton = document.createElement('button');
-            analyzeButton.innerText = 'Submit for Analysis';
-            analyzeButton.classList.add('submit-btn');
-            analyzeButton.addEventListener('click', function () {
-                const inputs = Array.from(document.querySelectorAll('.dynamic-input'));
-                const inputData = inputs.map(input => input.value);
-
-                if (inputData.some(data => !data.trim())) {
-                    alert('Please fill in all inputs!');
-                    return;
-                }
-
-                // 데이터 전송 논리 구현 가능
-                console.log('Selected times:', selectedTimes);
-                console.log('Input data:', inputData);
-            });
-
-            resultsContainer.appendChild(analyzeButton);
         });
     </script>
 </body>
