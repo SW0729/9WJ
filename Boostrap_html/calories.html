@@ -92,6 +92,10 @@
         .result-box p {
             margin: 0;
         }
+
+        #dynamic-results {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -107,7 +111,6 @@
                 <option value="breakfast">Breakfast</option>
                 <option value="lunch">Lunch</option>
                 <option value="dinner">Dinner</option>
-                <option value="snack">Snack</option>
             </select>
         </div>
         <div class="form-group">
@@ -121,18 +124,114 @@
                 <option value="no">No</option>
             </select>
         </div>
-        <button class="submit-btn">Analyze</button>
+        <button class="submit-btn" id="analyze-btn">Analyze</button>
     </div>
     <div class="results-panel">
         <h2>Analysis Results</h2>
-        <div class="result-box">
-            <p><strong>Calories:</strong> 350 kcal</p>
-            <p><strong>Protein:</strong> 20 g</p>
-            <p><strong>Recommendations:</strong> Consider adding more fiber-rich foods for balance.</p>
-        </div>
-        <div class="result-box">
-            <p><strong>Time-Specific Benefit:</strong> Great choice for a post-workout meal!</p>
-        </div>
+        <div id="dynamic-results"></div>
     </div>
+
+    <script>
+        document.getElementById('analyze-btn').addEventListener('click', function () {
+            const time = document.getElementById('time').value;
+            const resultsContainer = document.getElementById('dynamic-results');
+            resultsContainer.innerHTML = ''; // 기존 결과 초기화
+
+            // 동적 텍스트 박스 생성
+            const inputBox = document.createElement('div');
+            inputBox.classList.add('form-group');
+
+            if (time === 'lunch') {
+                const label = document.createElement('label');
+                label.innerText = 'What did you eat during Morning?';
+                inputBox.appendChild(label);
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = 'Enter foods consumed during Morning';
+                input.id = 'previous-food';
+                input.classList.add('dynamic-input');
+                inputBox.appendChild(input);
+            } else if (time === 'dinner') {
+                const morningLabel = document.createElement('label');
+                morningLabel.innerText = 'What did you eat during Morning?';
+                inputBox.appendChild(morningLabel);
+
+                const morningInput = document.createElement('input');
+                morningInput.type = 'text';
+                morningInput.placeholder = 'Enter foods consumed during Morning';
+                morningInput.id = 'morning-food';
+                morningInput.classList.add('dynamic-input');
+                inputBox.appendChild(morningInput);
+
+                const lunchLabel = document.createElement('label');
+                lunchLabel.innerText = 'What did you eat during Lunch?';
+                inputBox.appendChild(lunchLabel);
+
+                const lunchInput = document.createElement('input');
+                lunchInput.type = 'text';
+                lunchInput.placeholder = 'Enter foods consumed during Lunch';
+                lunchInput.id = 'lunch-food';
+                lunchInput.classList.add('dynamic-input');
+                inputBox.appendChild(lunchInput);
+            } else {
+                const label = document.createElement('label');
+                label.innerText = `What did you eat before ${time}?`;
+                inputBox.appendChild(label);
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = `Enter food consumed before ${time}`;
+                input.id = 'previous-food';
+                input.classList.add('dynamic-input');
+                inputBox.appendChild(input);
+            }
+
+            resultsContainer.appendChild(inputBox);
+
+            // 분석 요청 버튼 생성
+            const analyzeButton = document.createElement('button');
+            analyzeButton.innerText = 'Submit for Analysis';
+            analyzeButton.classList.add('submit-btn');
+            analyzeButton.addEventListener('click', function () {
+                const previousFood = document.getElementById('previous-food')?.value;
+                const morningFood = document.getElementById('morning-food')?.value;
+                const lunchFood = document.getElementById('lunch-food')?.value;
+
+                if (time === 'dinner' && (!morningFood || !lunchFood)) {
+                    alert('Please enter the foods you ate during Morning and Lunch!');
+                    return;
+                } else if (!previousFood) {
+                    alert('Please enter the food you ate before!');
+                    return;
+                }
+
+                // 데이터 백엔드로 전송
+                fetch('/analyze-food', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ time, morningFood, lunchFood, previousFood }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // 결과 표시
+                        resultsContainer.innerHTML = `
+                            <div class="result-box">
+                                <p><strong>Analysis:</strong> ${data.analysis}</p>
+                                <p><strong>Recommendations:</strong> ${data.recommendations}</p>
+                            </div>
+                        `;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Failed to analyze the data. Please try again later.');
+                    });
+            });
+
+            resultsContainer.appendChild(analyzeButton);
+        });
+    </script>
 </body>
 </html>
