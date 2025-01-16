@@ -54,6 +54,26 @@
             border-color: #ffc107;
         }
 
+        .checkbox-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .checkbox-box {
+            border: 1px solid #495057;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #2c2c2e;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .checkbox-box label {
+            margin-bottom: 5px;
+        }
+
         .submit-btn {
             background-color: #ffc107;
             border: none;
@@ -102,16 +122,25 @@
     <div class="sidebar">
         <h2>Food Intake Form</h2>
         <div class="form-group">
+            <div class="form-group">
             <label for="food">Food Name:</label>
             <input type="text" id="food" placeholder="Enter food name">
         </div>
-        <div class="form-group">
-            <label for="time">Time of Intake:</label>
-            <select id="time">
-                <option value="breakfast">Breakfast</option>
-                <option value="lunch">Lunch</option>
-                <option value="dinner">Dinner</option>
-            </select>
+        
+            <div class="checkbox-group">
+                <div class="checkbox-box">
+                    <input type="checkbox" id="breakfast" name="time" value="breakfast">
+                    <label for="breakfast">Breakfast</label>
+                </div>
+                <div class="checkbox-box">
+                    <input type="checkbox" id="lunch" name="time" value="lunch">
+                    <label for="lunch">Lunch</label>
+                </div>
+                <div class="checkbox-box">
+                    <input type="checkbox" id="dinner" name="time" value="dinner">
+                    <label for="dinner">Dinner</label>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <label for="age">Your Age:</label>
@@ -132,117 +161,129 @@
     </div>
 
     <script>
+        const checkboxes = document.querySelectorAll('input[name="time"]');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    checkboxes.forEach(cb => {
+                        if (cb !== this) {
+                            cb.checked = false;
+                        }
+                    });
+                }
+            });
+        });
+
         document.getElementById('analyze-btn').addEventListener('click', function () {
-            const time = document.getElementById('time').value;
             const resultsContainer = document.getElementById('dynamic-results');
-            resultsContainer.innerHTML = ''; // 기존 결과 초기화
+            resultsContainer.innerHTML = '';
 
-            // Breakfast에 대한 예외 처리
-            if (time === 'breakfast') {
-                const message = document.createElement('p');
-                message.innerText = 'Breakfast does not require additional input.';
-                message.style.color = '#ffc107';
-                resultsContainer.appendChild(message);
-                return;
-            }
+            if (document.getElementById('lunch').checked) {
+                const morningInputBox = document.createElement('div');
+                morningInputBox.classList.add('form-group');
 
-            // 동적 텍스트 박스 생성
-            const inputBox = document.createElement('div');
-            inputBox.classList.add('form-group');
-
-            if (time === 'lunch') {
-                const label = document.createElement('label');
-                label.innerText = 'What did you eat during Morning?';
-                inputBox.appendChild(label);
-
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.placeholder = 'Enter foods consumed during Morning';
-                input.id = 'previous-food';
-                input.classList.add('dynamic-input');
-                inputBox.appendChild(input);
-            } else if (time === 'dinner') {
                 const morningLabel = document.createElement('label');
                 morningLabel.innerText = 'What did you eat during Morning?';
-                inputBox.appendChild(morningLabel);
+                morningInputBox.appendChild(morningLabel);
 
                 const morningInput = document.createElement('input');
                 morningInput.type = 'text';
-                morningInput.placeholder = 'Enter foods consumed during Morning';
-                morningInput.id = 'morning-food';
+                morningInput.placeholder = 'Enter food consumed during Morning';
                 morningInput.classList.add('dynamic-input');
-                inputBox.appendChild(morningInput);
+                morningInputBox.appendChild(morningInput);
+
+                resultsContainer.appendChild(morningInputBox);
+            }
+
+            if (document.getElementById('dinner').checked) {
+                const morningInputBox = document.createElement('div');
+                morningInputBox.classList.add('form-group');
+
+                const morningLabel = document.createElement('label');
+                morningLabel.innerText = 'What did you eat during Morning?';
+                morningInputBox.appendChild(morningLabel);
+
+                const morningInput = document.createElement('input');
+                morningInput.type = 'text';
+                morningInput.placeholder = 'Enter food consumed during Morning';
+                morningInput.classList.add('dynamic-input');
+                morningInputBox.appendChild(morningInput);
+
+                resultsContainer.appendChild(morningInputBox);
+
+                const lunchInputBox = document.createElement('div');
+                lunchInputBox.classList.add('form-group');
 
                 const lunchLabel = document.createElement('label');
                 lunchLabel.innerText = 'What did you eat during Lunch?';
-                inputBox.appendChild(lunchLabel);
+                lunchInputBox.appendChild(lunchLabel);
 
                 const lunchInput = document.createElement('input');
                 lunchInput.type = 'text';
-                lunchInput.placeholder = 'Enter foods consumed during Lunch';
-                lunchInput.id = 'lunch-food';
+                lunchInput.placeholder = 'Enter food consumed during Lunch';
                 lunchInput.classList.add('dynamic-input');
-                inputBox.appendChild(lunchInput);
-            } else {
-                const label = document.createElement('label');
-                label.innerText = `What did you eat before ${time}?`;
-                inputBox.appendChild(label);
+                lunchInputBox.appendChild(lunchInput);
 
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.placeholder = `Enter food consumed before ${time}`;
-                input.id = 'previous-food';
-                input.classList.add('dynamic-input');
-                inputBox.appendChild(input);
+                resultsContainer.appendChild(lunchInputBox);
             }
 
-            resultsContainer.appendChild(inputBox);
+            if (resultsContainer.innerHTML === '') {
+                const message = document.createElement('p');
+                message.innerText = 'Please select at least one time of intake.';
+                message.style.color = '#ffc107';
+                resultsContainer.appendChild(message);
+            }
 
-            // 분석 요청 버튼 생성
-            const analyzeButton = document.createElement('button');
-            analyzeButton.innerText = 'Submit for Analysis';
-            analyzeButton.classList.add('submit-btn');
-            analyzeButton.addEventListener('click', function () {
-                const previousFood = document.getElementById('previous-food')?.value;
-                const morningFood = document.getElementById('morning-food')?.value;
-                const lunchFood = document.getElementById('lunch-food')?.value;
 
-                if (time === 'dinner' && (!morningFood || !lunchFood)) {
-                    alert('Please enter the foods you ate during Morning and Lunch!');
-                    return;
-                } else if (!previousFood && time !== 'breakfast') {
-                    alert('Please enter the food you ate before!');
-                    return;
-                }
+    const requestType = '한식'; // 요청 유형 지정 (한식, 일식, 양식, 중식식)
+    const url = ''; // 기본 API URL
 
-                // 데이터 백엔드로 전송
-                fetch('/analyze-food', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ time, morningFood, lunchFood, previousFood }),
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        // 결과 표시
-                        resultsContainer.innerHTML = `
-                            <div class="result-box">
-                                <p><strong>Analysis:</strong> ${data.analysis}</p>
-                                <p><strong>Recommendations:</strong> ${data.recommendations}</p>
-                            </div>
-                        `;
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Failed to analyze the data. Please try again later.');
-                    });
-            });
-
-            resultsContainer.appendChild(analyzeButton);
+    if (requestType === '한식') {
+        // 한식 요청
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cuisine: 'Korean', recipes: ['Kimchi', 'Bulgogi'] })
+        })
+        .then(res => res.json())
+        .then(data => console.log('Korean Cuisine Response:', data))
+        .catch(err => console.error('Error:', err));
+    } else if (requestType === '일식') {
+        // 일식 요청
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cuisine: 'Japanese', recipes: ['Sushi', 'Ramen'] })
+        })
+        .then(res => res.json())
+        .then(data => console.log('Japanese Cuisine Response:', data))
+        .catch(err => console.error('Error:', err));
+    } else if (requestType === '양식') {
+        // 양식 요청
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cuisine: 'Western', recipes: ['Pizza', 'Steak'] })
+        })
+        .then(res => res.json())
+        .then(data => console.log('Western Cuisine Response:', data))
+        .catch(err => console.error('Error:', err));
+    } else if (requestType === '중식') {
+        // 중식 요청
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cuisine: 'Chinese', recipes: ['Dumplings', 'Sweet and Sour Pork'] })
+        })
+        .then(res => res.json())
+        .then(data => console.log('Chinese Cuisine Response:', data))
+        .catch(err => console.error('Error:', err));
+    } else {
+        console.log('Invalid request type specified.');
+    }
         });
     </script>
 </body>
 </html>
-
 
