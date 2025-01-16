@@ -181,10 +181,10 @@
     <main>
         <h2>Choose a Cuisine</h2>
         <div class="categories">
-            <button class="category-btn">한식</button>
-            <button class="category-btn">일식</button>
-            <button class="category-btn">중식</button>
-            <button class="category-btn">양식</button>
+            <button class="category-btn" id="korean">한식</button>
+            <button class="category-btn" id="japanese">일식</button>
+            <button class="category-btn" id="chinese">중식</button>
+            <button class="category-btn" id="western">양식</button>
         </div>
         <div class="chat-container" id="chat-container">
             <div class="message bot">안녕하세요! 원하시는 음식을 입력하면 레시피가 나옵니다!</div>
@@ -197,7 +197,45 @@
         const chatContainer = document.getElementById('chat-container');
         const userInput = document.getElementById('user-input');
         const categoryButtons = document.querySelectorAll('.category-btn');
-    
+        let selectedCategory = '';
+        let country_food = ''
+        categoryButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                // 현재 버튼의 id 가져오기
+                selectedCategory = button.id;
+                // 조건문으로 처리 (Python 스타일로 이해하기 쉽게 작성)
+                if (selectedCategory === 'korean') { 
+                    country_food = '한식'
+                } else if (selectedCategory === 'japanese') {
+                    country_food = '일식'
+                } else if (selectedCategory === 'chinese') {
+                    country_food = '중식'
+                } else if (selectedCategory === 'western') {
+                    country_food = '양식'
+                }
+                fetch('/api/chatbot/set-country-food/', {
+                    method: 'POST', // POST 요청
+                    headers: {
+                        'Content-Type': 'application/json', // JSON 형식
+                    },
+                    body: JSON.stringify({
+                        country_food: country_food, // 서버로 보낼 데이터
+                    }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('요청 실패패');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('서버 응답:', data);
+                })
+                .catch(error => {
+                    console.error('에러 발생:', error);
+                });
+            });
+        });
         // API URL (DRF의 엔드포인트 URL)
         const apiUrl = '/api/chat/';
     
@@ -280,4 +318,3 @@
         }
     </script>
 </body>
-</html>

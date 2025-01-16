@@ -312,6 +312,7 @@ def recipe_finder(query, country_food):
     response = response.content
     if not llm.streaming:
         print(response, end='/n', flush=True)
+    return response
 
 def question(response, continue_question):
     chat_history_log = []
