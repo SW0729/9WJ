@@ -9,9 +9,15 @@
             margin: 0;
             font-family: 'Arial', sans-serif;
             display: flex;
+            flex-direction: column;
             height: 100vh;
             color: #f8f9fa;
             background: linear-gradient(to bottom, #1c1c1e, #2c2c2e);
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
         }
 
         .sidebar {
@@ -96,10 +102,31 @@
             gap: 20px;
         }
 
+        .results-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .results-panel h2 {
             color: #ffc107;
             border-bottom: 2px solid #495057;
             padding-bottom: 5px;
+            margin: 0;
+        }
+
+        .home-btn {
+            background-color: #ffc107;
+            color: #1c1c1e;
+            text-decoration: none;
+            padding: 8px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background-color: #ffcd39;
         }
 
         .result-box {
@@ -119,14 +146,14 @@
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Food Intake Form</h2>
-        <div class="form-group">
+    <div class="container">
+        <div class="sidebar">
+            <h2>Food Intake Form</h2>
             <div class="form-group">
-            <label for="food">Food Name:</label>
-            <input type="text" id="food" placeholder="Enter food name">
-        </div>
-        
+                <label for="food">Food Name:</label>
+                <input type="text" id="food" placeholder="Enter food name">
+            </div>
+
             <div class="checkbox-group">
                 <div class="checkbox-box">
                     <input type="checkbox" id="breakfast" name="time" value="breakfast">
@@ -141,23 +168,30 @@
                     <label for="dinner">Dinner</label>
                 </div>
             </div>
+
+            <div class="form-group">
+                <label for="age">Your Age:</label>
+                <input type="number" id="age" placeholder="Enter your age">
+            </div>
+
+            <div class="form-group">
+                <label for="diet">On a Diet?</label>
+                <select id="diet">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <button class="submit-btn" id="analyze-btn">Analyze</button>
         </div>
-        <div class="form-group">
-            <label for="age">Your Age:</label>
-            <input type="number" id="age" placeholder="Enter your age">
+
+        <div class="results-panel">
+            <div class="results-panel-header">
+                <h2>Analysis Results</h2>
+                <a href="#" class="home-btn">Home</a>
+            </div>
+            <div id="dynamic-results"></div>
         </div>
-        <div class="form-group">
-            <label for="diet">On a Diet?</label>
-            <select id="diet">
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
-        </div>
-        <button class="submit-btn" id="analyze-btn">Analyze</button>
-    </div>
-    <div class="results-panel">
-        <h2>Analysis Results</h2>
-        <div id="dynamic-results"></div>
     </div>
 
     <script>
