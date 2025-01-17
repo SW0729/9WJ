@@ -6,7 +6,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework_simplejwt.views import TokenObtainPairView # JWT 로그인 기능 제공
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer # JWT 직렬화 도구
 from rest_framework_simplejwt.tokens import RefreshToken # JWT 토큰 갱신을 위한 도구
-
+from django.contrib.auth.models import User
 from .models import CustomUser, Recipe, Tag
 from .serializers import ( # 직렬할 애들 가져오기
     CustomUserSerializer,
@@ -34,37 +34,76 @@ def signup_view(request):
     return render(request, 'signup.html') # signup,html 랜더링
 
 
+# 로그인 
+class CustomTokenObtainPairView(TokenObtainPairView):
+    """
+    이메일과 비밀번호를 사용한 JWT 토큰 생성 뷰
+    """
+    serializer_class = CustomTokenObtainPairSerializer
+
+
+class UserLoginAPI(APIView):
+    """
+    이메일과 비밀번호를 사용한 로그인 API
+    """
+    def post(self, request):
+        # 클라이언트가 보낸 이메일과 비밀번호 가져오기
+        email = request.data.get('email')  # 이메일 입력값
+        password = request.data.get('password')  # 비밀번호 입력값
+
+        # 이메일과 비밀번호가 입력되지 않았을 때 에러 반환
+        if not email or not password:
+            return Response(
+                {"message": "이메일과 비밀번호를 입력해주세요."},  # 안내 메시지
+                status=status.HTTP_400_BAD_REQUEST  # HTTP 상태코드 400: 잘못된 요청
+            )
+
+        # CustomTokenObtainPairSerializer를 사용해 데이터 검증
+        serializer = CustomTokenObtainPairSerializer(data={"email": email, "password": password})
+
+        # 이메일과 비밀번호가 맞는지 검증
+        if serializer.is_valid():  # 데이터가 유효하면
+            return Response(
+                {
+                    "message": "로그인 성공",  # 성공 메시지
+                    "data": serializer.validated_data  # 유효한 데이터 반환 (토큰 및 사용자 정보)
+                },
+                status=status.HTTP_200_OK  # HTTP 상태코드 200: 성공
+            )
+        else:
+            # 이메일 또는 비밀번호가 틀렸을 때 에러 반환
+            return Response(
+                {
+                    "message": "로그인 실패",  # 실패 메시지
+                    "errors": serializer.errors  # 에러 내용 반환
+                },
+                status=status.HTTP_400_BAD_REQUEST  # HTTP 상태코드 400: 잘못된 요청
+            )
+
 
 # 회원가입
 class RegisterView(APIView):
     """
-    회원가입 API
+    사용자 회원가입 뷰
     """
-    permission_classes = [AllowAny] # 모든 유저 접근 가능
+    def post(self, request):
+        username = request.data.get('username')
+        email = request.data.get('email')
+        password = request.data.get('password')
 
-    def post(self, request): # 새로운 정보를 받아서 저장
-        serializer = CustomUserSerializer(data=request.data) # 전달받은 데이터 직렬화 하기
-        if serializer.is_valid(): # 데이터 오류 확인
-            serializer.save() # 세이브
-            return Response(serializer.data, status=status.HTTP_201_CREATED) # 성공 응답
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)# 실패 시 오류응답답
+        if not username or not email or not password:
+            return Response(
+                {"message": "모든 필드를 입력해주세요."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-
-# 로그인 (JWT)
-class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer # 유저이름과 비밀번호 jwt 토큰 발급
-    
-    # def post(self, request, *args, **kwargs):
-    #     serializer = self.get_serializer(data=request.data)
-    #     try:
-    #         serializer.is_valid(raise_exception=True)
-    #         # 기본 데이터를 가져오고 필요한 응답 데이터 추가
-    #         response_data = serializer.validated_data
-    #         response_data['custom_message'] = "로그인 성공!"
-    #         return Response(response_data, status=200)
-    #     except Exception as e:
-    #         return Response({"error": "로그인 실패!"}, status=400)
-
+        # 사용자 생성
+        user = User.objects.create_user(username=username, email=email, password=password)
+        return Response(
+            {"message": "회원가입 성공", "username": user.username},
+            status=status.HTTP_201_CREATED
+        )
+   
 # 로그아웃
 class LogoutView(APIView):
     """

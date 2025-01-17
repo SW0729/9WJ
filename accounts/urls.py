@@ -1,35 +1,35 @@
 from django.urls import path
-from . import views
 from rest_framework_simplejwt.views import TokenRefreshView
 from .views import (
     ProfileView,
-    CustomTokenObtainPairView,
-    RegisterView,
+    CustomTokenObtainPairView, #JWT 토큰 추가
+    RegisterView, #JWT 토큰 갱신
     LogoutView,
-    TagListView,  # 올바른 뷰 이름으로 교체
+    TagListView,
+    UserLoginAPI,  # 로그인 API 추가
 )
 
 app_name = 'accounts'
-
 
 urlpatterns = [
     # 사용자 등록(회원가입)
     path('register/', RegisterView.as_view(), name='register'),
 
     # 사용자 로그인(JWT 토큰 생성)
+    path('login/', UserLoginAPI.as_view(), name='login'),
+
+    # JWT 토큰 발급 (커스텀)
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
 
     # JWT 토큰 갱신
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # 사용자 프로필(마이페이지) 조회
-    path('profile1/', ProfileView.as_view(), name='profile'),
+    path('profile/', ProfileView.as_view(), name='profile'),
 
     # 사용자 로그아웃
     path('logout/', LogoutView.as_view(), name='logout'),
-    # 태그 목록
-    path('tags/', TagListView.as_view(), name='tag-list'),  
 
-
-     
+    # 태그 목록 조회
+    path('tags/', TagListView.as_view(), name='tag-list'),
 ]

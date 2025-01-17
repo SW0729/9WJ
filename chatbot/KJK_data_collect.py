@@ -10,7 +10,7 @@ import json
 import os
 import openai
 from openai import OpenAI
-openai.api_key = "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"
+openai.api_key = os.getenv("OPENAI_API_KEY2") 
 import warnings
 warnings.filterwarnings(action = 'ignore')
 import subprocess
@@ -319,6 +319,7 @@ def recipe_finder(query, country_food=None):
     response = response.content
     if not llm.streaming:
         print(response, end='/n', flush=True)
+        return response
 
 def question(response, continue_question):
     chat_history_log = []

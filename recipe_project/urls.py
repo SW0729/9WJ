@@ -17,9 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include  # include는 다른 URL을 포함시킬 때 사용
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView  # JWT 관련 뷰
-from django.http import JsonResponse  # json형식으로 응답위한 도구
-from accounts.views import login_view,main_view,profile_view,signup_view
-from chatbot.views import chatbot_view
+from django.http import JsonResponse  # json형식으로 응답을 위한 도구
+from accounts.views import login_view,main_view,profile_view,signup_view # html 로그인,메인,프로필,회원가입 뷰 불러오기기
+from chatbot.views import chatbot_view  # html 챗봇 뷰 불러오기
+from calories.views import calories_view  # html 칼로리 뷰 불러오기
+
 
 def root_view(request):
     return JsonResponse({"message": "Welcome to Recipe API"}, status=500)
@@ -39,15 +41,17 @@ urlpatterns = [
 
 
     #'login/' 경로로 들어오면 login_view를 실행
-    path('login/', login_view, name='login'),  
-    # 'main/' 경로로 들어오면 main_view를 실행
-    path('main/', main_view, name='main'),     
-    # 'profile/' 경로로 들어오면 profile_view를 실행
-    path('profile/', profile_view, name='profile'), 
-    # 'signup/' 경로로 들어오면 signup_view를 실행
-    path('signup/', signup_view, name='signup'),
-     
-    path('chatbot/', chatbot_view, name='chatbot'),
+    path('login/', login_view, name='login'),    #'login/' 경로로 들어오면 login_view를 실행
+   
+    path('main/', main_view, name='main'),      # 'main/' 경로로 들어오면 main_view를 실행
+   
+    path('profile/', profile_view, name='profile'),  # 'profile/' 경로로 들어오면 profile_view를 실행
+   
+    path('signup/', signup_view, name='signup'),   # 'signup/' 경로로 들어오면 signup_view를 실행
+   
+    path('chatbot/', chatbot_view, name='chatbot'),  # 'chatbot/' 경로로 들어오면 chatbot_view를 실행
+   
+    path('calories/', calories_view, name='calories'),  # 'calories/' 경로로 들어오면 calories_view를 실행
 
 
 ]

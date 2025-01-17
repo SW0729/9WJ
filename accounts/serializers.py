@@ -2,6 +2,8 @@ from rest_framework import serializers # 직렬화 도구 가져오기
 from .models import CustomUser# 사용자 모델 가져오기
 from food.models import Recipe, Tag  # food.models에서 Recipe와 Tag 가져오기
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer# jwt
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import User
 
 
 # 사용자 시리얼라이저
@@ -25,39 +27,36 @@ class CustomUserSerializer(serializers.ModelSerializer):
 # JWT 커스텀 토큰 시리얼라이저
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
-    이메일과 비밀번호를 사용하여 JWT 토큰 발급
+    이메일과 비밀번호를 사용하여 JWT 토큰을 발급하는 시리얼라이저
     """
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['username'] = user.username
-        token['email'] = user.email
-        return token
 
+    # 시리얼라이저가 클라이언트로부터 받은 데이터를 처리하는 부분
     def validate(self, attrs):
-        # 기존 validate 메서드 호출
-        data = super().validate(attrs)
+        # 이메일과 비밀번호를 클라이언트 요청에서 가져옴
+        email = attrs.get('email')  # 클라이언트가 입력한 이메일
+        password = attrs.get('password')  # 클라이언트가 입력한 비밀번호
 
-        # 이메일을 기반으로 사용자 인증
-        email = attrs.get('email', None)
-        password = attrs.get('password', None)
-
+        # 이메일로 사용자 찾기
         try:
-            # 이메일로 사용자 객체 가져오기
-            user = User.objects.get(email=email)
+            user = User.objects.get(email=email)  # 이메일이 맞는 사용자를 검색
         except User.DoesNotExist:
-            raise serializers.ValidationError({"error": "Invalid email or password"})
+            # 이메일이 틀리면 에러 메시지 반환
+            raise serializers.ValidationError({"error": "존재하지 않는 이메일입니다."})
 
         # 비밀번호 확인
-        if not user.check_password(password):
-            raise serializers.ValidationError({"error": "Invalid email or password"})
+        if not user.check_password(password):  # 비밀번호가 틀리면
+            raise serializers.ValidationError({"error": "비밀번호가 틀렸습니다."})
 
-        # 추가 데이터 반환
-        data.update({
-            'username': user.username,
-            'email': user.email
-        })
-        return data
+        # 사용자 인증이 성공하면 JWT 토큰 생성
+        refresh = RefreshToken.for_user(user)  # 리프레시 토큰 생성
+
+        # 토큰과 사용자 정보를 반환
+        return {
+            'refresh': str(refresh),  # 리프레시 토큰을 문자열로 변환
+            'access': str(refresh.access_token),  # 액세스 토큰을 문자열로 변환
+            'username': user.username,  # 사용자 이름
+            'email': user.email,  # 사용자 이메일
+        }
 
 # 레시피 시리얼라이저
 class RecipeSerializer(serializers.ModelSerializer):

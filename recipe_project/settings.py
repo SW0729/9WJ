@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 import os
 
 # .env 파일 로드
@@ -37,6 +38,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 # Application definition
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30), # 유저로그인 30분동안만 유효 액세스토큰큰
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1), # 리플레쉬 유효기간 일딴 30분으로 지정
+    'AUTH_HEADER_TYPES': ('Bearer',), # http 헤더 bearer설정
+}
 
 INSTALLED_APPS = [
     'django.contrib.admin',

@@ -17,7 +17,7 @@
             <div class="collapse navbar-collapse mt-3" id="navbarNav">
                 <ul class="navbar-nav d-flex flex-row justify-content-center">
                     <li class="nav-item mx-3">
-                        <a class="nav-link" href="{% url 'main' %}" style="color: white; transition: background-color 0.3s;">소개</a>
+                        <a class="nav-link" href="{% url 'about' %}" style="color: white; transition: background-color 0.3s;">소개</a>
                     </li>
                     <li class="nav-item mx-3">
                         <a class="nav-link" href="{% url 'main' %}" style="color: white; transition: background-color 0.3s;">메인</a>
@@ -116,7 +116,7 @@
             }
     
             // 회원가입 API 요청
-            fetch('http://127.0.0.1:8000/api/auth/register/', {
+            fetch('http://127.0.0.1:8000/api/signup/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
