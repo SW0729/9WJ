@@ -32,7 +32,7 @@ urlpatterns = [
     path('api/auth/', include('accounts.urls', namespace='accounts')),  # 인증 관련 urls
     path('api/food/', include('food.urls')),  # 음식 관련 urls
     path('api/chatbot/', include('chatbot.urls')),  # 챗봇 추가
-    
+    path('api/calories/', include('calories.urls')), # 칼로리 추가
     
     # JWT 관련 URL 추가
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # JWT 발급
