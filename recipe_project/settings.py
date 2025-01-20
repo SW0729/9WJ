@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt', # jwt 관련 앱
     'accounts', # 이앱은 사용자 관리 앱임
     'food', # recipe레시피 이름이 중복이라 food로 지정 #레시피 모델들을 관리하는 앱
-    'chatbot', #ai챗봇 연결앱앱
+    'chatbot', #ai챗봇 연결앱
+    'calories', # 칼로리 앱 추가
 ]
 
 REST_FRAMEWORK = {
@@ -130,7 +131,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
+
 
 
 # Internationalization

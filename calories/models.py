@@ -11,7 +11,7 @@ from django.db import models
 # p 27~31
 #===========================================================
 
-class calories(models.model):
+class calories(models.Model):
     age = models.IntegerField(verbose_name="나이") 
     # 유저 나이 저장
     food_time = models.CharField(max_length=15, verbose_name="식사 시간") 

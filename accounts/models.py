@@ -3,10 +3,14 @@ from django.db import models # db 모델 만들기 위한 모듈
 
 
 class CustomUser(AbstractUser):
-    """
-    사용자 모델(CustomUser)
-    Django의 기본 사용자 모델(AbstractUser)을 사용
-    """
+ 
+
+    # username을 아예 제거하여 email만 사용
+    username = None  # username 필드를 제거
+
+    # email을 필수로 설정
+    email = models.EmailField(unique=True)
+
 
     groups = models.ManyToManyField(
         'auth.Group',# 계정을 사용한  사용자가 그룹을 애기함

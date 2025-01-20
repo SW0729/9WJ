@@ -7,6 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView # JWT 로그인 �
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer # JWT 직렬화 도구
 from rest_framework_simplejwt.tokens import RefreshToken # JWT 토큰 갱신을 위한 도구
 from django.contrib.auth.models import User
+
 from .models import CustomUser, Recipe, Tag
 from .serializers import ( # 직렬할 애들 가져오기
     CustomUserSerializer,
@@ -34,14 +35,41 @@ def signup_view(request):
     return render(request, 'signup.html') # signup,html 랜더링
 
 
-# 로그인 
+# JWT 토큰
 class CustomTokenObtainPairView(TokenObtainPairView):
     """
-    이메일과 비밀번호를 사용한 JWT 토큰 생성 뷰
+    이메일과 비밀번호를 사용하여 JWT 토큰을 발급하는 시리얼라이저
     """
-    serializer_class = CustomTokenObtainPairSerializer
 
+    serializer_class = CustomTokenObtainPairSerializer 
 
+    
+    def validate(self, attrs):
+        # 클라이언트가 요청한 이메일과 비밀번호를 가져옵니다.
+        email = attrs.get('email')  # 이메일
+        password = attrs.get('password')  # 비밀번호
+
+        # 이메일로 사용자를 찾습니다.
+        try:
+            user = CustomUser.objects.get(email=email)  # 이메일로 사용자 검색
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError({"error": "존재하지 않는 이메일입니다."})  # 이메일이 없으면 에러
+
+        # 비밀번호가 맞는지 확인합니다.
+        if not user.check_password(password):  # 비밀번호 확인
+            raise serializers.ValidationError({"error": "비밀번호가 틀렸습니다."})  # 틀리면 에러
+
+        # 비밀번호가 맞으면 JWT 토큰을 생성합니다.
+        refresh = RefreshToken.for_user(user)  # 리프레시 토큰 생성
+
+        return {
+            'refresh': str(refresh),  # 리프레시 토큰
+            'access': str(refresh.access_token),  # 액세스 토큰
+            # 'username': user.username,  # 사용자 이름
+            'email': user.email,  # 사용자 이메일
+        }
+
+# 로그인 
 class UserLoginAPI(APIView):
     """
     이메일과 비밀번호를 사용한 로그인 API
@@ -59,7 +87,7 @@ class UserLoginAPI(APIView):
             )
 
         # CustomTokenObtainPairSerializer를 사용해 데이터 검증
-        serializer = CustomTokenObtainPairSerializer(data={"email": email, "password": password})
+        serializer = CustomTokenObtainPairSerializer(data=request.data)
 
         # 이메일과 비밀번호가 맞는지 검증
         if serializer.is_valid():  # 데이터가 유효하면
@@ -91,6 +119,10 @@ class RegisterView(APIView):
         email = request.data.get('email')
         password = request.data.get('password')
 
+
+       
+
+
         if not username or not email or not password:
             return Response(
                 {"message": "모든 필드를 입력해주세요."},
@@ -103,7 +135,7 @@ class RegisterView(APIView):
             {"message": "회원가입 성공", "username": user.username},
             status=status.HTTP_201_CREATED
         )
-   
+           
 # 로그아웃
 class LogoutView(APIView):
     """

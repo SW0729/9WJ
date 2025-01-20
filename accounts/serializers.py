@@ -15,6 +15,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = CustomUser # 사용할 데이터 모델 설정
         fields = ('id', 'username', 'email', 'password') # 필드 설정
         extra_kwargs = {'password': {'write_only': True}} # 비밀번호를 쓰기
+        exclude = ["username"]
 
     def create(self, validated_data):
         """
@@ -29,17 +30,23 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
     이메일과 비밀번호를 사용하여 JWT 토큰을 발급하는 시리얼라이저
     """
+    email = serializers.EmailField()  # 이메일 필드
+    password = serializers.CharField(write_only=True)  # 비밀번호 필드
+    username = serializers.CharField(required=False)
 
     # 시리얼라이저가 클라이언트로부터 받은 데이터를 처리하는 부분
     def validate(self, attrs):
         # 이메일과 비밀번호를 클라이언트 요청에서 가져옴
-        email = attrs.get('email')  # 클라이언트가 입력한 이메일
-        password = attrs.get('password')  # 클라이언트가 입력한 비밀번호
+        email = attrs.get('email')  # 유저 이메일일
+        password = attrs.get('password')  # 유저 비밀번호
+
+
+       
 
         # 이메일로 사용자 찾기
         try:
-            user = User.objects.get(email=email)  # 이메일이 맞는 사용자를 검색
-        except User.DoesNotExist:
+            user = CustomUser.objects.get(email=email)  # 이메일로 사용자 검색
+        except CustomUser.DoesNotExist:
             # 이메일이 틀리면 에러 메시지 반환
             raise serializers.ValidationError({"error": "존재하지 않는 이메일입니다."})
 
@@ -54,7 +61,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return {
             'refresh': str(refresh),  # 리프레시 토큰을 문자열로 변환
             'access': str(refresh.access_token),  # 액세스 토큰을 문자열로 변환
-            'username': user.username,  # 사용자 이름
+            # 'username': user.username,  # 사용자 이름
             'email': user.email,  # 사용자 이메일
         }
 

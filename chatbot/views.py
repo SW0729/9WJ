@@ -15,7 +15,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY2")
 
 # 챗봇 페이지
 def chatbot_view(request):
-    return render(request, 'chatbot.html') # 'chatbot' 랜더링
+    return render(request, 'chat.html') # 'chatbot' 랜더링
 
 
 
