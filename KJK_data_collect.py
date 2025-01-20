@@ -307,6 +307,8 @@ def recipe_finder(query, country_food):
     **고구마 튀김**들도 맛있습니다.
 
     총 칼로리:기존 레시피 총 칼로리는 약 546 칼로리이고, 파슬리가루를 추가하면 총 549 칼로리가 됩니다.
+    
+    For last, based on what recipe you made, if you receive a question based on the question, you must answer it professionally,
     """
     response = llm.invoke(context)
     response = response.content
@@ -314,37 +316,37 @@ def recipe_finder(query, country_food):
         print(response, end='/n', flush=True)
     return response
 
-def question(response, continue_question):
-    chat_history_log = []
-    while True:
-        continue_question = input('\n혹시 질문이나 궁금하신 점 있을까요? ')
-        if continue_question == 'quit':
-            break
-        client2 = OpenAI()
-        completion2 = client2.chat.completions.create(
-            model = 'gpt-4o-mini',
-            messages = [
-                {'role': 'system', 'content': """
-                You are a master chef and a helpful assistant. You will receive multiple questions based on {response} but don't make any duplicated answers.
-                1. **Answer the Question**
-                - Provide a thorough and informative response to each question.
-                2. **Detailed Ingredient Instructions**
-                - If the user asks how to make specific ***ingredients***, provide a detailed, step-by-step explanation on how to prepare them.
-                3. **chat history**
-                - If user is asking a question regarding previous chat, try to find it in {chat_history_log}
-                **Notes:**
-                - Replace `{response}` with the relevant context or topic as needed.
-                - Ensure all responses are clear, concise, and relevant to the user's queries.
-                - Maintain a professional and friendly tone throughout the conversation.
-                """},
-                {'role' : 'user', 'content': response},
-                {'role' : 'user', 'content' : continue_question},
-            ], stream= True
-            )
-        for chunk in completion2:
-            if chunk.choices[0].delta.content is not None:
-                print(chunk.choices[0].delta.content, end="", flush = True)
-        chat_history_log.append({'role': 'user', 'content': continue_question})
-        chat_history_log.append({'role': 'assistant', 'content': completion2})
+# def question(response, continue_question):
+#     chat_history_log = []
+#     while True:
+#         continue_question = input('\n혹시 질문이나 궁금하신 점 있을까요? ')
+#         if continue_question == 'quit':
+#             break
+#         client2 = OpenAI()
+#         completion2 = client2.chat.completions.create(
+#             model = 'gpt-4o-mini',
+#             messages = [
+#                 {'role': 'system', 'content': """
+#                 You are a master chef and a helpful assistant. You will receive multiple questions based on {response} but don't make any duplicated answers.
+#                 1. **Answer the Question**
+#                 - Provide a thorough and informative response to each question.
+#                 2. **Detailed Ingredient Instructions**
+#                 - If the user asks how to make specific ***ingredients***, provide a detailed, step-by-step explanation on how to prepare them.
+#                 3. **chat history**
+#                 - If user is asking a question regarding previous chat, try to find it in {chat_history_log}
+#                 **Notes:**
+#                 - Replace `{response}` with the relevant context or topic as needed.
+#                 - Ensure all responses are clear, concise, and relevant to the user's queries.
+#                 - Maintain a professional and friendly tone throughout the conversation.
+#                 """},
+#                 {'role' : 'user', 'content': response},
+#                 {'role' : 'user', 'content' : continue_question},
+#             ], stream= True
+#             )
+#         for chunk in completion2:
+#             if chunk.choices[0].delta.content is not None:
+#                 print(chunk.choices[0].delta.content, end="", flush = True)
+#         chat_history_log.append({'role': 'user', 'content': continue_question})
+#         chat_history_log.append({'role': 'assistant', 'content': completion2})
 
-recipe_finder(query, country_food)
+# recipe_finder(query, country_food)

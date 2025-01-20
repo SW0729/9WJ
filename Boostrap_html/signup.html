@@ -68,8 +68,8 @@
             <form id = 'signupForm'>
                 <!-- Full Name Input -->
                 <div class="mb-3">
-                    <label for="fullName" class="form-label">사용자명</label>
-                    <input type="text" class="form-control" id="fullName" placeholder="사용자명을 입력해주세요" required>
+                    <label for="fullname" class="form-label">사용자명</label>
+                    <input type="text" class="form-control" id="fullname" placeholder="사용자명을 입력해주세요" required>
                 </div>
                 <br>
                 <!-- Email Input -->
@@ -101,7 +101,7 @@
         </div>
     </div>
     <script>
-        document.getElementById('SignupForm').addEventListener('submit', function(event) {
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
             event.preventDefault();  // 폼 제출 기본 동작을 막음
             
             const full_name = document.getElementById('fullname').value;
@@ -132,7 +132,7 @@
             })
             .then(data => {
                 alert('회원가입에 성공했습니다! 환영합니다.');
-                window.location.href = '/login';  // 회원가입 후 로그인 페이지로 리디렉션
+                window.location.href = 'http://127.0.0.1:8000/api/login';  // 회원가입 후 로그인 페이지로 리디렉션
             })
             .catch(error => {
                 console.error('Error:', error);

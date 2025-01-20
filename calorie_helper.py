@@ -23,6 +23,8 @@ output = ""
 question = ""
 #받는 값 없는 아침 추천 함수
 def calories_calculator(time, response, food_time, age, is_on_diet, chosen_language = 'Korean', breakfast_time = None, launch_time = None):
+    global nutrition_file
+    global output
     if time == '아침':
         # 무엇을 fetch로 받아야 할 지, 일단은 정의를 해 놓아야 할 것 같아서...
         # response = input('아침으로는 무엇을 드셨나요?: ')
@@ -34,7 +36,7 @@ def calories_calculator(time, response, food_time, age, is_on_diet, chosen_langu
         model = 'gpt-4o-mini',
         messages = [
         {'role':'system', 'content': """
-        You are chef who knows all types of the food and also a professional nutrition assistant providing dietary analysis and personalized meal recommendations to users.
+        You are chef who knows all types of the food and also a professional nutrition assistant providing dietary analysis and personalized meal recommendations to users. You must consider the file {nutrition_file}.
         ***Your primary task is to strictly adhere to the following structure while providing a comprehensive and detailed analysis. Ensure that you include variable types for each food item mentioned, categorizing them accurately and elaborating on their characteristics. Additionally, consider a variety of cuisines—Korean, Western, Chinese, and Japanese—when recommending foods or meals, highlighting their unique qualities, cultural significance, and nutritional profiles. Focus on delivering rich, in-depth information that goes beyond basic descriptions for all meals.***
         ***All responses must be written in Korean.***
         ## **Guidelines for Tasks**
@@ -234,7 +236,7 @@ def calories_calculator(time, response, food_time, age, is_on_diet, chosen_langu
                 content = chunk.choices[0].delta.content
                 print(content, end="", flush=True)
                 output += content
-                return content
+        return output
     if time == '점심':
         time = '점심'
         # response = input('점심으로는 무엇을 드셨나요?: ')
@@ -456,7 +458,7 @@ def calories_calculator(time, response, food_time, age, is_on_diet, chosen_langu
                 content = chunk.choices[0].delta.content
                 print(content, end="", flush=True) 
                 output += content
-                return content
+        return output
     if time == '저녁':
         time = '저녁'
         # response = input('저녁으로는 무엇을 드셨나요?: ')
@@ -469,7 +471,7 @@ def calories_calculator(time, response, food_time, age, is_on_diet, chosen_langu
         model = 'gpt-4o-mini',
         messages = [
         {'role':'system', 'content': """
-        You are chef who knows all types of the food and also a professional nutrition assistant providing dietary analysis and personalized meal recommendations to users.
+        You are chef who knows all types of the food and also a professional nutrition assistant providing dietary analysis and personalized meal recommendations to users. You must consider the file {nutrition_file}.
         ***Your primary task is to strictly adhere to the following structure while providing a comprehensive and detailed analysis. Ensure that you include variable types for each food item mentioned, categorizing them accurately and elaborating on their characteristics. Additionally, consider a variety of cuisines—Korean, Western, Chinese, and Japanese—when recommending foods or meals, highlighting their unique qualities, cultural significance, and nutritional profiles. Focus on delivering rich, in-depth information that goes beyond basic descriptions for all meals.***
         ***All responses must be written in Korean.***
         ## **Guidelines for Tasks**
@@ -689,35 +691,41 @@ def calories_calculator(time, response, food_time, age, is_on_diet, chosen_langu
                 content = chunk.choices[0].delta.content
                 print(content, end="", flush=True) 
                 output += content
-                return content
+        return output
 
-#return한 ouput을 받아 지속적인 질문을 받는 함수
-def questions(output):
-    global question
-    continue_question = input('\n혹시 질문이나 궁금하신 점 있을까요? ')
-    client = OpenAI()
-    completion = client.chat.completions.create(
-        model='gpt-4o-mini',
-        messages=[
-            {'role': 'system', 'content': """
-            You are a master chef and a helpful health trainer. You will receive multiple questions based on {output} but don't make any duplicated answers.
-            1. **Answer the Question**
-            - Provide a thorough and informative response to each question.
-            2. **Detailed Instructions**
-            - If the user asks how to make specific ***ingredients***, provide a detailed, step-by-step explanation on how to prepare them.
-            3. **chat history**
-            - If user is asking a question regarding previous chat, try to find it in {recommendation_history}
-            **Notes:**
-            - Ensure all responses are clear, concise, and relevant to the user's queries.
-            - Maintain a professional and friendly tone throughout the conversation.
-            """},
-            {'role': 'user', 'content': output},
-            {'role': 'user', 'content': continue_question},
-        ], stream= True)
-    question_output = []
-    for chunk in completion:
-        if chunk.choices[0].delta.content is not None:
-            content = chunk.choices[0].delta.content
-            print(content, end="", flush=True) 
-            question += content
-    return question_output
+# #return한 ouput을 받아 지속적인 질문을 받는 함수
+# def questions(output):
+#     global question
+#     continue_question = input('\n혹시 질문이나 궁금하신 점 있을까요? ')
+#     client = OpenAI()
+#     completion = client.chat.completions.create(
+#         model='gpt-4o-mini',
+#         messages=[
+#             {'role': 'system', 'content': """
+#             You are a master chef and a helpful health trainer. You will receive multiple questions based on {output} but don't make any duplicated answers.
+#             1. **Answer the Question**
+#             - Provide a thorough and informative response to each question.
+#             2. **Detailed Instructions**
+#             - If the user asks how to make specific ***ingredients***, provide a detailed, step-by-step explanation on how to prepare them.
+#             3. **chat history**
+#             - If user is asking a question regarding previous chat, try to find it in {recommendation_history}
+#             **Notes:**
+#             - Ensure all responses are clear, concise, and relevant to the user's queries.
+#             - Maintain a professional and friendly tone throughout the conversation.
+#             """},
+#             {'role': 'user', 'content': output},
+#             {'role': 'user', 'content': continue_question},
+#         ], stream= True)
+#     question_output = []
+#     for chunk in completion:
+#         if chunk.choices[0].delta.content is not None:
+#             content = chunk.choices[0].delta.content
+#             print(content, end="", flush=True) 
+#             question += content
+#     return question_output
+time = '아침'
+response = '김치찌개'
+food_time = '8시'
+age = '19살'
+is_on_diet = '네'
+print(calories_calculator(time = '아침', response = '김치찌개', food_time = '8시', age = '12살', is_on_diet = '네', chosen_language = 'Korean', breakfast_time = None, launch_time = None))
