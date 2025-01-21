@@ -10,10 +10,14 @@ import json
 import os
 import openai
 from openai import OpenAI
+
 openai.api_key = os.getenv("OPENAI_API_KEY2") 
+
 import warnings
 warnings.filterwarnings(action = 'ignore')
 import subprocess
+import markdown
+
 #----------------------------------------------------------------------
 korea_food = os.path.join(os.path.dirname(__file__), '한식.json')
 western_food = os.path.join(os.path.dirname(__file__), '양식.json')
@@ -98,8 +102,12 @@ def hybrid_search(query, vector_store, documents, top_k=1):
     return final_result
 #----------------------------------------------------------------------
 course = ['한식', '양식', '중식', '일식']
+output = ""
+
+
 # country_food = input('정하세요: ').replace(" ", "_").replace("&", "_")
 def recipe_finder(query, country_food=None):
+    global output
     current_path = os.getcwd()
     country_food = country_food.replace('"', '')
     country_food = country_food.replace("\"", '')
@@ -317,9 +325,7 @@ def recipe_finder(query, country_food=None):
     """
     response = llm.invoke(context)
     response = response.content
-    if not llm.streaming:
-        print(response, end='/n', flush=True)
-        return response
+    return response
 
 def question(response, continue_question):
     chat_history_log = []

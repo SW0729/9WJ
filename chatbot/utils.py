@@ -18,6 +18,7 @@ def load_kjk_data(json_path, country_food):
     """
     JSON 파일과 요리 종류를 받아 데이터를 Chroma 데이터베이스에 저장.
     """
+    print(country_food)
     # Chroma 데이터베이스 저장 경로
     persist_directory = os.path.join(os.path.dirname(__file__), f"chroma_{country_food}")
 

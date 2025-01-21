@@ -1,17 +1,24 @@
-from django.contrib.auth.models import AbstractUser #django에서 제공하는 사용자 모델
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models # db 모델 만들기 위한 모듈
+from .managers import CustomUserManager # managers 가져오기
 
 
-class CustomUser(AbstractUser):
- 
-
-    # username을 아예 제거하여 email만 사용
-    username = None  # username 필드를 제거
-
-    # email을 필수로 설정
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
+    # username = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=True)
 
 
+    objects = CustomUserManager()
+
+
+    USERNAME_FIELE = 'email'
+    REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.email
+    
     groups = models.ManyToManyField(
         'auth.Group',# 계정을 사용한  사용자가 그룹을 애기함
         related_name='customuser_set',  # 고유한 이름으로 변경
@@ -29,6 +36,38 @@ class CustomUser(AbstractUser):
         """
         from food.models import Recipe # 레시피 모델 임포트
         return Recipe.objects.filter(author=self)  # 현재 사용자가 작성한 레시피만 가져오기기
+
+
+# ==============================================================
+
+
+# class CustomUser(AbstractUser):
+ 
+
+#     # username을 아예 제거하여 email만 사용
+#     username = None  # username 필드를 제거
+
+#     # email을 필수로 설정
+#     email = models.EmailField(unique=True)
+
+
+#     groups = models.ManyToManyField(
+#         'auth.Group',# 계정을 사용한  사용자가 그룹을 애기함
+#         related_name='customuser_set',  # 고유한 이름으로 변경
+#         blank=True # 그룹을 비워도 ok
+#     )
+#     user_permissions = models.ManyToManyField(
+#         'auth.Permission', #권한 세이브
+#         related_name='customuser_permissions_set',  # 고유한 이름으로 변경
+#         blank=True # 그룹을 비워도 ok
+#     )
+
+#     def get_my_recipes(self):
+#         """
+#         사용자가 작성한 레시피를 목록을 가져오는 함수수
+#         """
+#         from food.models import Recipe # 레시피 모델 임포트
+#         return Recipe.objects.filter(author=self)  # 현재 사용자가 작성한 레시피만 가져오기기
 
 
 class Recipe(models.Model):

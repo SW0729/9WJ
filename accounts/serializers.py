@@ -1,6 +1,6 @@
 from rest_framework import serializers # 직렬화 도구 가져오기
 from .models import CustomUser# 사용자 모델 가져오기
-from food.models import Recipe, Tag  # food.models에서 Recipe와 Tag 가져오기
+from food.models import Recipe, Tag# food.models에서 Recipe와 Tag 가져오기
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer# jwt
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
@@ -26,13 +26,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
 
 # JWT 커스텀 토큰 시리얼라이저
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+class CustomTokenObtainPairSerializer(serializers.Serializer):
     """
     이메일과 비밀번호를 사용하여 JWT 토큰을 발급하는 시리얼라이저
     """
     email = serializers.EmailField()  # 이메일 필드
     password = serializers.CharField(write_only=True)  # 비밀번호 필드
-    username = serializers.CharField(required=False)
+    # username = serializers.CharField(required=False)
 
     # 시리얼라이저가 클라이언트로부터 받은 데이터를 처리하는 부분
     def validate(self, attrs):

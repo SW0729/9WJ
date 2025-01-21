@@ -224,7 +224,7 @@
             }
 
             // 서버로 선택된 음식 카테고리 전송
-            fetch('/api/chatbot/set-country-food/', {
+            fetch('http://127.0.0.1:8000/api/chatbot/recipes/search/', {
                 method: 'POST', // POST 요청
                 headers: {
                     'Content-Type': 'application/json', // JSON 형식
@@ -265,7 +265,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ message: userMessage }),
+                    body: JSON.stringify({ query: userMessage, country_food: country_food }),
                 });
 
                 if (response.ok) {

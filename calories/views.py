@@ -10,7 +10,7 @@ from langdetect import detect # 자동 언어 감지 시스템 라이브러리
 import os # api 보안키 설정
 
 
-openai.api_key = os.getenv("OPENAI_API_KEY2")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY2")
 
 
 #칼로리 페이지
@@ -46,12 +46,14 @@ class CalorieView(APIView): # 이제 간단하게 하자 너무 길다야
             try:
                 result = calories_calculator(
                     time=data['food_time'], 
-                    filtered_file=None,  
+                    # filtered_file=None,  
                     response=data['food_details'], 
                     food_time=data['food_time'], 
                     age=str(data['age']),
-                    is_on_diet=data['is_on_diet'], 
-                    chosen_language=chosen_language
+                    is_on_diet=str(data['is_on_diet']),
+                    chosen_language=chosen_language,
+                    breakfast_time =  "breakfast_time",
+                    lunch_time = "lunch",
                 )
                 serializer.save()  # 입력 데이터를 저장
                 return Response({"analysis": result}, status=status.HTTP_200_OK)

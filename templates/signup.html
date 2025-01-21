@@ -104,7 +104,7 @@
         document.getElementById('SignupForm').addEventListener('submit', function(event) {
             event.preventDefault();  // 폼 제출 기본 동작을 막음
             
-            const full_name = document.getElementById('fullname').value;
+            const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmpassword = document.getElementById('confirmPassword').value;
@@ -116,12 +116,12 @@
             }
     
             // 회원가입 API 요청
-            fetch('http://127.0.0.1:8000/api/signup/', {
+            fetch('http://127.0.0.1:8000//api/auth/register/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ full_name, email, password, confirmpassword }),
+                body: JSON.stringify({ username, email, password, confirmpassword }),
             })
             .then(response => {
                 if (response.ok) {

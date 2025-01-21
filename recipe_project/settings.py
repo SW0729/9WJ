@@ -16,9 +16,10 @@ from datetime import timedelta
 import os
 
 # .env 파일 로드
-load_dotenv()
+
 
 # 환경 변수 가져오기
+
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY2")
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
