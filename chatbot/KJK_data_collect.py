@@ -6,24 +6,25 @@ from langchain.docstore.document import Document
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 import re
 #----------------------------------------------------------------------
+import subprocess
+import markdown
 import json
 import os
 import openai
 from openai import OpenAI
 
 openai.api_key = os.getenv("OPENAI_API_KEY2") 
-
+# print(openai.api_key)
 import warnings
 warnings.filterwarnings(action = 'ignore')
-import subprocess
-import markdown
+
 
 #----------------------------------------------------------------------
 korea_food = os.path.join(os.path.dirname(__file__), '한식.json')
 western_food = os.path.join(os.path.dirname(__file__), '양식.json')
 japanses_food = os.path.join(os.path.dirname(__file__), '일식.json')
 chinses_food = os.path.join(os.path.dirname(__file__), '중식.json')
-embeddings = OpenAIEmbeddings()
+embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
 
 #----------------------------------------------------------------------
 language = '한국어' #추후 변경 가능
@@ -123,7 +124,7 @@ def recipe_finder(query, country_food=None):
         documents = load_documents(country_food)
     callback_handler = StreamingStdOutCallbackHandler()
     callback_manager = CallbackManager([callback_handler])
-    llm = ChatOpenAI(model = 'gpt-4o-mini', temperature = 0, streaming=True, callbacks=[callback_handler]) #streaming=True, callbacks=[callback_handler]
+    llm = ChatOpenAI(model = 'gpt-4o-mini', temperature = 0, streaming=True, callbacks=[callback_handler], api_key=openai.api_key) #streaming=True, callbacks=[callback_handler]
     results = hybrid_search(query, vector_store, documents)
     context = f"""{results} 내용을 바탕으로 질문에 답해 주세요. 질문: {query}
     ***Don't forget to indicate the numbers or weight of the food or ingredients and also indiate the time or weight of the ingredients***
@@ -333,7 +334,7 @@ def question(response, continue_question):
         continue_question = input('\n혹시 질문이나 궁금하신 점 있을까요? ')
         if continue_question == 'quit':
             break
-        client2 = OpenAI()
+        client2 = OpenAI(api_key=openai.api_key)
         completion2 = client2.chat.completions.create(
             model = 'gpt-4o-mini',
             messages = [

@@ -23,7 +23,7 @@ def load_kjk_data(json_path, country_food):
     persist_directory = os.path.join(os.path.dirname(__file__), f"chroma_{country_food}")
 
     # Embeddings 객체 생성
-    embeddings = OpenAIEmbeddings()
+    embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
 
     # JSON 파일 로드
     try:

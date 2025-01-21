@@ -22,7 +22,7 @@ def filtered_file(text):
     return text
 nutrition_file = filtered_file(nutrition_file)
 chosen_language = 'Korean'
-client = OpenAI()
+client = OpenAI(api_key=openai.api_key)
 output = ""
 question = ""
 #받는 값 없는 아침 추천 함수

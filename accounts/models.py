@@ -5,7 +5,7 @@ from .managers import CustomUserManager # managers 가져오기
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    # username = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    username = models.CharField(max_length=255, unique=True, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=True)
 

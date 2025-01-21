@@ -106,7 +106,7 @@ WSGI_APPLICATION = 'recipe_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # SQLite3 데이터베이스 엔진
-        'NAME': BASE_DIR / 'db.sqlite3',  # 프로젝트의 루트 디렉토리에 db.sqlite3 파일 생성
+        'NAME': BASE_DIR / 'db_2.sqlite3',  # 프로젝트의 루트 디렉토리에 db.sqlite3 파일 생성
     }
 }
 
