@@ -13,7 +13,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = CustomUser # 사용할 데이터 모델 설정
-        fields = ('id', 'username', 'email', 'password') # 필드 설정
+        fields = ('id', 'email', 'password') # 필드 설정 #usersname 제외외
         extra_kwargs = {'password': {'write_only': True}} # 비밀번호를 쓰기
         exclude = ["username"]
 

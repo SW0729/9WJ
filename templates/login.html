@@ -99,6 +99,11 @@
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                alert('이메일과 비밀번호를 모두 입력해 주세요.');
+                return;
+            }
     
             // 로그인 API 요청
             fetch('http://127.0.0.1:8000/api/auth/login/', {
@@ -110,13 +115,16 @@
             })
             .then(response => response.json())
             .then(data => {
-                if (data.access) {  // 로그인 성공
+                console.log(data);
+                if (data.data && data.data.access) {  // 로그인 성공
                     alert('로그인에 성공했습니다! 환영합니다.');
                     localStorage.setItem('access_token', data.access);  // 토큰 저장
                     window.location.href = '/chatbot';  // 로그인 후 리디렉션할 페이지
                     
-                } else {  // 로그인 실패
-                    alert('이메일 또는 비밀번호를 다시 확인해주세요.');
+                } else if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert('예상하지 못한 오류가 발생했습니다.');
                 }
             })
             .catch(error => {

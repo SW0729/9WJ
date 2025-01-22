@@ -229,8 +229,7 @@
                 headers: {
                     'Content-Type': 'application/json', // JSON 형식
                 },
-                body: JSON.stringify({
-                    country_food: country_food, // 서버로 보낼 데이터
+                body: JSON.stringify({country_food: country_food, // 서버로 보낼 데이터
                 }),
             })
             .then(response => {
@@ -260,7 +259,7 @@
 
             // 서버로 메시지 전송 및 응답 처리
             try {
-                const response = await fetch(apiUrl, {
+                const response = await fetch('http://127.0.0.1:8000/api/chatbot/recipes/search/',  {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
