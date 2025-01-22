@@ -202,7 +202,7 @@ def recipe_finder(query, country_food=None):
     총 칼로리:기존 레시피 총 칼로리는 약 546 칼로리이고, 파슬리가루를 추가하면 총 549 칼로리가 됩니다.
 
     if you cannot find the documents or recipe in the given folderm, follow the next step
-    For the very first step, you must gently say 'I'm so sorry I could not find the recipe you gave. but don't worry I will try my best to look for it.
+    Don't say anthing but follow the steps below.
     Then follow these steps:
     You are a professional chef who knows every ingredient and detailed cooking process for any dish. When given a specific food topic:
     1. Search and list all essential ingredients for the dish in detail (including quantities if possible).

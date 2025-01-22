@@ -223,27 +223,27 @@
                 country_food = '양식';
             }
 
-            // 서버로 선택된 음식 카테고리 전송
-            fetch('http://127.0.0.1:8000/api/chatbot/recipes/search/', {
-                method: 'POST', // POST 요청
-                headers: {
-                    'Content-Type': 'application/json', // JSON 형식
-                },
-                body: JSON.stringify({country_food: country_food, // 서버로 보낼 데이터
-                }),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('요청 실패');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('서버 응답:', data);
-            })
-            .catch(error => {
-                console.error('에러 발생:', error);
-            });
+            // // 서버로 선택된 음식 카테고리 전송
+            // fetch('http://127.0.0.1:8000/api/chatbot/recipes/search/', {
+            //     method: 'POST', // POST 요청
+            //     headers: {
+            //         'Content-Type': 'application/json', // JSON 형식
+            //     },
+            //     body: JSON.stringify({country_food: country_food, // 서버로 보낼 데이터
+            //     }),
+            // })
+            // .then(response => {
+            //     if (!response.ok) {
+            //         throw new Error('요청 실패');
+            //     }
+            //     return response.json();
+            // })
+            // .then(data => {
+            //     console.log('서버 응답:', data);
+            // })
+            // .catch(error => {
+            //     console.error('에러 발생:', error);
+            // });
         });
     });
 
