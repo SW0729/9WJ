@@ -14,7 +14,7 @@ from django.db import models
 class calories(models.Model):
     age = models.IntegerField(verbose_name="나이") 
     # 유저 나이 저장
-    food_time = models.CharField(max_length=15, verbose_name="식사 시간") 
+    food_time = models.CharField(max_length=150, verbose_name="식사 시간") 
     #삼식세끼 중 한개 고르기
     food_details = models.TextField(verbose_name="음식 정보") 
     # 유저가 먹은 음식 정보 프롬프트가 너무 길었어 길게 저장
