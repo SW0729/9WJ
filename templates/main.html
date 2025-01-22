@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        /* Refined Navbar Styles */
+        .navbar-custom {
+            background-color: #2C3E50;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-brand {
+            color: #F39C12;
+            font-weight: bold;
+            font-size: 2rem;
+        }
+
+        .navbar-brand:hover {
+            color: #F1C40F;
+            text-decoration: none;
+        }
+
+        .navbar-nav .nav-link {
+            color: #ECF0F1 !important;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #F39C12 !important;
+        }
+
+        .btn-custom {
+            color: #F39C12;
+            background-color: transparent;
+            border: 1px solid #F39C12;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #F39C12;
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-image: url('https://img.freepik.com/free-photo/top-view-tasty-meaty-soup-with-potatoes-dark-desk_140725-76954.jpg?t=st=1736608426~exp=1736612026~hmac=15c8912eb49cb461a030e9564b04906169cc4de36b98beed9b8f2fcf6dafdfc8&w=1480');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 3.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: fadeInDown 2s;
+        }
+
+        .hero-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .btn-learn-more {
+            background-color: #F1C40F;
+            color: #2C3E50;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-learn-more:hover {
+            background-color: #2C3E50;
+            color: white;
+        }
+
+        /* Section Styles */
+        .section-padding {
+            padding: 70px 15px;
+        }
+
+        .container-box {
+            padding: 40px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #bdc3c7, #ecf0f1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.5);
+            position: relative;
+            animation: zoomIn 1s;
+            margin-top: -400px;
+            transition: all 0.3s ease;
+        }
+
+        .container-box:hover {
+            background: linear-gradient(135deg, #aab7b8, #f4f6f6);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #16A085;
+            margin-bottom: 15px;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-text {
+                font-size: 1rem;
+            }
+
+            .container-box {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">맛봇</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-custom ms-3" id="loginButton1">Sign In</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="text-center">
+            <h1 class="hero-title">맛봇에 오신것을 환영합니다.</h1>
+            <p class="hero-text">AI를 활용한 이 서비스를 언제 어디서나 찾을 수 있는 레시피를 통해 건강하고 자신만의 식단을 관리하세요.</p>
+            <button class="btn btn-learn-more" id="loginButton2">로그인</button>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container section-padding">
+        <div class="row text-center">
+            <div class="col-md-6 mb-4">
+                <div class="container-box">
+                    <div class="feature-icon">🍳</div>
+                    <h3 class="fw-bold text-primary">1. AI 챗봇</h3>
+                    <p>사용자의 요청에 따라 다양한 요리 레시피를 추천하고, 필요한 재료와 조리 과정을 안내하여 요리를 더 쉽고 즐겁게 만드세요.</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="container-box">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="fw-bold text-primary">2. 칼로리 식단 관리</h3>
+                    <p>각 재료의 칼로리를 분석하고 AI가 맞춤형 식단을 추천하여 체계적인 식단 관리가 가능합니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginButton1').addEventListener('click', function() {
+            window.location.href = '/login';
+        });
+        document.getElementById('loginButton2').addEventListener('click', function() {
+            window.location.href = '/login';
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

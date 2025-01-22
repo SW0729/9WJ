@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpartaChef</title>
+    <style>
+        body {
+            background-image: url('https://img.freepik.com/free-photo/top-view-tasty-dinner-with-meat-potatoes-served-with-green-black-plate-pepper-garlic-oil-bottle-cutlery-set_179666-19991.jpg?t=st=1736732172~exp=1736735772~hmac=fe500d7cae7d6fd417ffa0813fc281ab7a29be2f0079149e17506e389ee8d9fb&w=1480');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 28px;
+            color: #ffc107;
+            display: flex;
+            align-items: center;
+        }
+
+        header h1 img {
+            margin-right: 15px;
+            width: 50px;
+            height: 50px;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #f8f9fa;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ffc107;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            margin: 20px;
+            overflow: hidden;
+        }
+
+        main h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        main .categories {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .category-btn {
+            background-color: #495057;
+            color: white;
+            padding: 15px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .category-btn:hover {
+            background-color: #198754;
+            transform: scale(1.05);
+        }
+
+        .category-btn.active {
+            background-color: #ffc107;
+            color: black;
+            transform: scale(1.1);
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 1400px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .chat-container::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+        }
+
+        .message {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 16px;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+        }
+
+        footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        footer input {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #495057;
+            border-radius: 25px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        footer input:focus {
+            border-color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <img src="chat-icon.png" alt="Logo">
+            맛봇
+        </h1>
+        <nav>
+            <a href="/main">홈</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Choose a Cuisine</h2>
+        <div class="categories">
+            <button class="category-btn" id="korean">한식</button>
+            <button class="category-btn" id="japanese">일식</button>
+            <button class="category-btn" id="chinese">중식</button>
+            <button class="category-btn" id="western">양식</button>
+        </div>
+        <div class="chat-container" id="chat-container">
+            <div class="message bot">안녕하세요! 원하시는 음식을 입력하면 레시피가 나옵니다!</div>
+        </div>
+    </main>
+    <footer>
+        <input type="text" placeholder="음식의 이름을 입력하세요!" id="user-input">
+    </footer>
+<script>
+    const chatContainer = document.getElementById('chat-container');
+    const userInput = document.getElementById('user-input');
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    let selectedCategory = '';
+    let country_food = '';
+
+    categoryButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            // 모든 버튼에서 active 클래스 제거
+            categoryButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+        
+            // 클릭한 버튼에만 active 클래스 추가
+            button.classList.add('active');
+            selectedCategory = button.id;
+            console.log('Selected category:', selectedCategory); // 확인용
+
+            // 선택된 카테고리 설정
+            if (selectedCategory === 'korean') { 
+                country_food = '한식';
+            } else if (selectedCategory === 'japanese') {
+                country_food = '일식';
+            } else if (selectedCategory === 'chinese') {
+                country_food = '중식';
+            } else if (selectedCategory === 'western') {
+                country_food = '양식';
+            }
+
+            // 서버로 선택된 음식 카테고리 전송
+            fetch('http://127.0.0.1:8000/api/chatbot/recipes/search/', {
+                method: 'POST', // POST 요청
+                headers: {
+                    'Content-Type': 'application/json', // JSON 형식
+                },
+                body: JSON.stringify({country_food: country_food, // 서버로 보낼 데이터
+                }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('요청 실패');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('서버 응답:', data);
+            })
+            .catch(error => {
+                console.error('에러 발생:', error);
+            });
+        });
+    });
+
+    // 사용자 입력 핸들러
+    userInput.addEventListener('keypress', async (e) => {
+        if (e.key === 'Enter' && userInput.value.trim() !== '') {
+            const userMessage = userInput.value.trim();
+            appendMessage('user', userMessage); // 사용자 메시지 추가
+            userInput.value = '';
+
+            // 로딩 메시지 표시
+            appendMessage('bot', '검색 중입니다... 조금만 기다려 주세요');
+
+            // 서버로 메시지 전송 및 응답 처리
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/chatbot/recipes/search/',  {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: userMessage, country_food: country_food }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const botMessage = data.results || '답변을 불러오는 데 실패했습니다.';
+                    updateLastBotMessage(botMessage); // 로딩 메시지 대체
+                } else {
+                    updateLastBotMessage('서버 응답에 실패했습니다.');
+                }
+            } catch (error) {
+                updateLastBotMessage('오류가 발생했습니다. 나중에 다시 시도해 주세요.');
+                console.error('Error:', error);
+            }
+        }
+    });
+
+    // 메시지 추가 함수 (appendMessage)
+    function appendMessage(sender, text) {
+        const side = sender === 'user' ? 'right' : 'left';
+        const msgHTML = `
+            <div class="msg ${side}-msg">
+                <div class="msg-bubble">
+                    <div class="msg-info">
+                        <div class="msg-info-name">${sender === 'user' ? '사용자' : '봇'}</div>
+                        <div class="msg-info-time">${formatDate(new Date())}</div>
+                    </div>
+                    <div class="msg-text">${text}</div>
+                </div>
+            </div>
+        `;
+        chatContainer.insertAdjacentHTML('beforeend', msgHTML);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // 마지막 봇 메시지 업데이트 함수 (로딩 메시지 대체)
+    function updateLastBotMessage(text) {
+        const messages = chatContainer.querySelectorAll('.msg.left-msg');
+        if (messages.length > 0) {
+            messages[messages.length - 1].querySelector('.msg-text').textContent = text;
+        }
+    }
+
+    // 시간 포맷팅 함수
+    function formatDate(date) {
+        return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+    }
+</script>
+</body>
