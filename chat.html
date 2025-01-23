@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpartaChef</title>
+    <style>
+        body {
+            background-image: url('https://img.freepik.com/free-photo/top-view-tasty-dinner-with-meat-potatoes-served-with-green-black-plate-pepper-garlic-oil-bottle-cutlery-set_179666-19991.jpg?t=st=1736732172~exp=1736735772~hmac=fe500d7cae7d6fd417ffa0813fc281ab7a29be2f0079149e17506e389ee8d9fb&w=1480');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 28px;
+            color: #ffc107;
+            display: flex;
+            align-items: center;
+        }
+
+        header h1 img {
+            margin-right: 15px;
+            width: 50px;
+            height: 50px;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #f8f9fa;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ffc107;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            margin: 20px;
+            overflow: hidden;
+        }
+
+        main h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        main .categories {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .category-btn {
+            background-color: #495057;
+            color: white;
+            padding: 15px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .category-btn:hover {
+            background-color: #198754;
+            transform: scale(1.05);
+        }
+
+        .category-btn.selected {
+            background-color: #ffc107;
+            color: black;
+            transform: scale(1.1);
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 1400px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .chat-container::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+        }
+
+        .message {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 16px;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+        }
+
+        footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        footer input {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #495057;
+            border-radius: 25px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        footer input:focus {
+            border-color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <img src="chat-icon.png" alt="Logo">
+            SpartaChef
+        </h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Choose a Cuisine</h2>
+        <div class="categories">
+            <button class="category-btn">Korean</button>
+            <button class="category-btn">Japanese</button>
+            <button class="category-btn">Chinese</button>
+            <button class="category-btn">Western</button>
+        </div>
+        <div class="chat-container" id="chat-container">
+            <div class="message bot">Welcome! Please type a dish you want a recipe for.</div>
+        </div>
+    </main>
+    <footer>
+        <input type="text" placeholder="Type your message here..." id="user-input">
+    </footer>
+    <script>
+        const categories = document.querySelectorAll('.category-btn');
+        categories.forEach(category => {
+            category.addEventListener('click', () => {
+                document.querySelector('.category-btn.selected')?.classList.remove('selected');
+                category.classList.add('selected');
+            });
+        });
+
+        const chatContainer = document.getElementById('chat-container');
+        const userInput = document.getElementById('user-input');
+
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && userInput.value.trim() !== '') {
+                const userMessage = userInput.value.trim();
+                addMessage('user', userMessage);
+                userInput.value = '';
+
+                setTimeout(() => {
+                    addMessage('bot', `Searching for the recipe: "${userMessage}..."`);
+                }, 1000);
+            }
+        });
+
+        function addMessage(sender, text) {
+            const message = document.createElement('div');
+            message.className = `message ${sender}`;
+            message.textContent = text;
+            chatContainer.appendChild(message);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>

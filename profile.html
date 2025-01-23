@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <!-- Bootstrap CSS를 불러옵니다 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 전체 배경 이미지 설정 */
+        body {
+            background-image: url('https://img.freepik.com/free-photo/chicken-larb-plate-with-dried-chilies-tomatoes-spring-onions-lettuce_1150-27099.jpg?t=st=1736731979~exp=1736735579~hmac=75ecb9397f830d79e175d9002d87e31e60c13d169ce3ca2b3f1bfeba5fefdca1&w=1480');
+            background-attachment: fixed; /* 배경 고정 */
+            background-position: center; /* 중앙 정렬 */
+            font-family: 'Arial', sans-serif; /* 폰트 설정 */
+            color: #fff; /* 텍스트 기본 색상 흰색 */
+            position: relative;
+        }
+
+        /* 오버레이 효과를 위한 투명 검은색 레이어 */
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.6); /* 반투명 검은색 */
+            position: absolute; /* 절대 위치 지정 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* 배경 뒤로 */
+        }
+
+        /* 네비게이션 바 디자인 */
+        .navbar {
+            background-color: rgba(0, 109, 9, 0.8); /* 반투명 초록색 */
+        }
+
+        /* 브랜드 이름 스타일 */
+        .navbar-brand {
+            color:rgb(255, 255, 253); /* 검정색 */
+            font-weight: bold; /* 볼드체 */
+        }
+
+        /* 네비게이션 링크 스타일 */
+        .navbar-nav .nav-link {
+            color: #ffffff; /* 기본 흰색 */
+            transition: color 0.2s ease-in-out; /* 부드러운 색상 전환 */
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ff6347; /* 호버 시 빨간색 */
+        }
+
+        /* 프로필 카드 디자인 */
+        .profile-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8)); /* 그라데이션 배경 */
+            border-radius: 15px; /* 모서리 둥글게 */
+            padding: 20px; /* 내부 여백 */
+            text-align: center; /* 텍스트 중앙 정렬 */
+            color: #333; /* 텍스트 색상 */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* 그림자 */
+        }
+
+        /* 프로필 이미지 스타일 */
+        .profile-card img {
+            width: 120px; /* 너비 */
+            height: 120px; /* 높이 */
+            border-radius: 50%; /* 원형 모양 */
+            border: 4px solid #32cd32; /* 초록색 테두리 */
+            margin-bottom: 15px; /* 이미지와 텍스트 사이 여백 */
+        }
+
+        /* 프로필 이름 스타일 */
+        .profile-card h4 {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        /* 탭 콘텐츠 섹션 디자인 */
+        .tab-content-wrapper {
+            margin-top: 50px; /* 상단 여백 */
+        }
+
+        /* 탭 버튼 스타일 */
+        .nav-tabs .nav-link {
+            background-color: rgba(255, 255, 255, 0.8); /* 반투명 흰색 */
+            color: #32cd32; /* 초록색 */
+            border-radius: 5px; /* 모서리 둥글게 */
+            font-weight: bold; /* 볼드체 */
+            margin: 0 5px; /* 좌우 여백 */
+        }
+
+        /* 활성화된 탭 스타일 */
+        .nav-tabs .nav-link.active {
+            background-color: #ff6347; /* 빨간색 */
+            color: #fff; /* 텍스트 흰색 */
+        }
+
+        /* 카드 디자인 */
+        .card {
+            border: none; /* 테두리 제거 */
+            border-radius: 10px; /* 모서리 둥글게 */
+            background: rgba(255, 255, 255, 0.9); /* 반투명 흰색 배경 */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* 애니메이션 */
+        }
+
+        /* 카드 호버 효과 */
+        .card:hover {
+            transform: translateY(-5px); /* 위로 이동 */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+        }
+
+        /* 카드 이미지 스타일 */
+        .card-img-top {
+            border-radius: 10px 10px 0 0; /* 이미지 상단 둥글게 */
+        }
+
+        /* 버튼 스타일 */
+        .btn-primary {
+            background-color: #ffd700; /* 노란색 */
+            border: none; /* 테두리 제거 */
+        }
+
+        /* 버튼 호버 효과 */
+        .btn-primary:hover {
+            background-color: #ff6347; /* 빨간색 */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 오버레이 레이어 -->
+    <div class="overlay"></div>
+
+    <!-- 네비게이션 바 -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- 브랜드 이름 -->
+            <a class="navbar-brand" href="#">맛봇</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 프로필 섹션 -->
+    <div class="profile-card mt-5">
+        <!-- 프로필 이미지 -->
+        <img src="https://via.placeholder.com/150" alt="">
+        <h4>레시피 조회 내역</h4>
+        <p class="text-muted">작성한 내역이 없습니다</p>
+        </div>
+    </div>
+
+    <!-- 탭 콘텐츠 섹션 -->
+    <div class="container mt-5">
+        <div class="tab-content-wrapper">
+            <ul class="nav nav-tabs justify-content-center" id="profileTabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="recipes-tab" data-bs-toggle="tab" data-bs-target="#recipes" type="button" role="tab" aria-controls="recipes" aria-selected="true">Recipes</button>
+                </li>
+            </ul>
+            <div class="tab-content mt-3">
+                <div class="tab-pane fade show active" id="recipes" role="tabpanel" aria-labelledby="recipes-tab">
+                    <!-- 여기에 탭 콘텐츠가 서서히 들어갑니다 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            const recipesTab = document.getElementById('recipes');
+            if (recipesTab) {
+                fetch('http://127.0.0.1:8000/api/auth/profile/')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.recipes && Array.isArray(data.recipes)) {
+                            recipesTab.innerHTML = `
+                                <h5>Delicious Recipes</h5>
+                                <ul>
+                                    ${data.recipes.map(recipe => `<li>${recipe.name}</li>`).join('')}
+                                </ul>
+                            `;
+                        } else {
+                            recipesTab.innerHTML = '<p>No recipes found.</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                        recipesTab.innerHTML = '<p>Failed to load recipes. Please try again later.</p>';
+                    });
+            } else {
+                console.error('Recipes tab not found in the DOM.');
+            }
+        };
+    </script>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

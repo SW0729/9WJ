@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Intake Analyzer</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            height: 100vh;
+            color: #f8f9fa;
+            background: linear-gradient(to bottom, #1c1c1e, #2c2c2e);
+        }
+
+        .sidebar {
+            width: 30%;
+            background-color: #343a40;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sidebar h2 {
+            color: #ffc107;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #495057;
+            border-radius: 5px;
+            background-color: #2c2c2e;
+            color: #f8f9fa;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #ffc107;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .checkbox-box {
+            border: 1px solid #495057;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #2c2c2e;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .checkbox-box label {
+            margin-bottom: 5px;
+        }
+
+        .submit-btn {
+            background-color: #ffc107;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #ffcd39;
+        }
+
+        .results-panel {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .results-panel h2 {
+            color: #ffc107;
+            border-bottom: 2px solid #495057;
+            padding-bottom: 5px;
+        }
+
+        .result-box {
+            background-color: #495057;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .result-box p {
+            margin: 0;
+        }
+
+        #dynamic-results {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Food Intake Form</h2>
+        <div class="form-group">
+            <div class="form-group">
+            <label for="food">Food Name:</label>
+            <input type="text" id="food" placeholder="Enter food name">
+        </div>
+        
+            <div class="checkbox-group">
+                <div class="checkbox-box">
+                    <input type="checkbox" id="breakfast" name="time" value="breakfast">
+                    <label for="breakfast">Breakfast</label>
+                </div>
+                <div class="checkbox-box">
+                    <input type="checkbox" id="lunch" name="time" value="lunch">
+                    <label for="lunch">Lunch</label>
+                </div>
+                <div class="checkbox-box">
+                    <input type="checkbox" id="dinner" name="time" value="dinner">
+                    <label for="dinner">Dinner</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="age">Your Age:</label>
+            <input type="number" id="age" placeholder="Enter your age">
+        </div>
+        <div class="form-group">
+            <label for="diet">On a Diet?</label>
+            <select id="diet">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+        </div>
+        <button class="submit-btn" id="analyze-btn">Analyze</button>
+    </div>
+    <div class="results-panel">
+        <h2>Analysis Results</h2>
+        <div id="dynamic-results"></div>
+    </div>
+
+    <script>
+        const checkboxes = document.querySelectorAll('input[name="time"]');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    checkboxes.forEach(cb => {
+                        if (cb !== this) {
+                            cb.checked = false;
+                        }
+                    });
+                }
+            });
+        });
+
+        document.getElementById('analyze-btn').addEventListener('click', function () {
+            const resultsContainer = document.getElementById('dynamic-results');
+            resultsContainer.innerHTML = '';
+
+            if (document.getElementById('lunch').checked) {
+                const morningInputBox = document.createElement('div');
+                morningInputBox.classList.add('form-group');
+
+                const morningLabel = document.createElement('label');
+                morningLabel.innerText = 'What did you eat during Morning?';
+                morningInputBox.appendChild(morningLabel);
+
+                const morningInput = document.createElement('input');
+                morningInput.type = 'text';
+                morningInput.placeholder = 'Enter food consumed during Morning';
+                morningInput.classList.add('dynamic-input');
+                morningInputBox.appendChild(morningInput);
+
+                resultsContainer.appendChild(morningInputBox);
+            }
+
+            if (document.getElementById('dinner').checked) {
+                const morningInputBox = document.createElement('div');
+                morningInputBox.classList.add('form-group');
+
+                const morningLabel = document.createElement('label');
+                morningLabel.innerText = 'What did you eat during Morning?';
+                morningInputBox.appendChild(morningLabel);
+
+                const morningInput = document.createElement('input');
+                morningInput.type = 'text';
+                morningInput.placeholder = 'Enter food consumed during Morning';
+                morningInput.classList.add('dynamic-input');
+                morningInputBox.appendChild(morningInput);
+
+                resultsContainer.appendChild(morningInputBox);
+
+                const lunchInputBox = document.createElement('div');
+                lunchInputBox.classList.add('form-group');
+
+                const lunchLabel = document.createElement('label');
+                lunchLabel.innerText = 'What did you eat during Lunch?';
+                lunchInputBox.appendChild(lunchLabel);
+
+                const lunchInput = document.createElement('input');
+                lunchInput.type = 'text';
+                lunchInput.placeholder = 'Enter food consumed during Lunch';
+                lunchInput.classList.add('dynamic-input');
+                lunchInputBox.appendChild(lunchInput);
+
+                resultsContainer.appendChild(lunchInputBox);
+            }
+
+            if (resultsContainer.innerHTML === '') {
+                const message = document.createElement('p');
+                message.innerText = 'Please select at least one time of intake.';
+                message.style.color = '#ffc107';
+                resultsContainer.appendChild(message);
+            }
+        });
+    </script>
+</body>
+</html>
