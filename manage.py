@@ -3,6 +3,7 @@
 import os
 import sys
 import warnings
+import dotenv
 
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -22,4 +23,5 @@ def main():
 
 
 if __name__ == '__main__':
+    dotenv.load_dotenv()
     main()

@@ -12,12 +12,14 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 import os
 
 # .env 파일 로드
-load_dotenv()
+
 
 # 환경 변수 가져오기
+
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY2")
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -35,8 +37,14 @@ SECRET_KEY = 'django-insecure-_w05b3zlf)&!mu#u)cz9k(a7oidh&@%l&fm@=8c&9hm29rh+$2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 # Application definition
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30), # 유저로그인 30분동안만 유효 액세스토큰큰
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1), # 리플레쉬 유효기간 일딴 30분으로 지정
+    'AUTH_HEADER_TYPES': ('Bearer',), # http 헤더 bearer설정
+}
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -50,7 +58,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt', # jwt 관련 앱
     'accounts', # 이앱은 사용자 관리 앱임
     'food', # recipe레시피 이름이 중복이라 food로 지정 #레시피 모델들을 관리하는 앱
-    'chatbot', #ai챗봇 연결앱앱
+    'chatbot', #ai챗봇 연결앱
+    'calories', # 칼로리 앱 추가
 ]
 
 REST_FRAMEWORK = {
@@ -75,7 +84,7 @@ ROOT_URLCONF = 'recipe_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'], # 'templates' 폴더 경로 설정
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -96,11 +105,10 @@ WSGI_APPLICATION = 'recipe_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',  # SQLite3 데이터베이스 엔진
+        'NAME': BASE_DIR / 'db_2.sqlite3',  # 프로젝트의 루트 디렉토리에 db.sqlite3 파일 생성
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -119,6 +127,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+
 
 
 # Internationalization
