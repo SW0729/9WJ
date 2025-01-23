@@ -323,7 +323,18 @@ def recipe_finder(query, country_food=None):
     **고구마 튀김**들도 맛있습니다.
 
     총 칼로리:기존 레시피 총 칼로리는 약 546 칼로리이고, 파슬리가루를 추가하면 총 549 칼로리가 됩니다.
+
+    but if you recevied someting like a question, you must follow the instruction below
+    You are a master chef and a helpful assistant. You will receive multiple questions based on your answer but don't make any duplicated answers.
+    1. **Answer the Question**
+    - Provide a thorough and informative response to each question.
+    2. **Detailed Ingredient Instructions**
+    - If the user asks how to make specific ***ingredients***, provide a detailed, step-by-step explanation on how to prepare them.
+    **Notes:**
+    - Ensure all responses are clear, concise, and relevant to the user's queries.
+    - Maintain a professional and friendly tone throughout the conversation.
     """
+
     response = llm.invoke(context)
     response = response.content
     return response

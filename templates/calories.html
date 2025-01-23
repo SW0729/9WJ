@@ -36,7 +36,8 @@
         }
 
         .form-group {
-            margin-bottom: 15px;
+            width: 100%; /* 부모 요소 크기에 맞춤 */
+            max-width: 600px; /* 최대 가로 크기 제한 */
         }
 
         .form-group label {
@@ -46,13 +47,15 @@
         }
 
         .form-group input, .form-group select {
-            width: 100%;
+            width: calc(100% - 20px); /* 20px은 padding 합산 */
+            max-width: 100%; /* 입력 필드가 벗어나지 않도록 */
             padding: 10px;
             font-size: 16px;
             border: 1px solid #495057;
             border-radius: 5px;
             background-color: #2c2c2e;
             color: #f8f9fa;
+            box-sizing: border-box; /* 패딩을 포함하여 전체 너비 조정 */
         }
 
         .form-group input:focus, .form-group select:focus {
@@ -60,24 +63,27 @@
             border-color: #ffc107;
         }
 
-        .checkbox-group {
+        .time-buttons {
             display: flex;
             gap: 10px;
         }
 
-        .checkbox-box {
+        .time-button {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #2c2c2e;
+            color: #f8f9fa;
             border: 1px solid #495057;
             border-radius: 5px;
-            padding: 10px;
-            background-color: #2c2c2e;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .checkbox-box label {
-            margin-bottom: 5px;
+        .time-button.selected {
+            background-color: #ffc107;
+            color: #1c1c1e;
         }
 
         .submit-btn {
@@ -154,20 +160,13 @@
                 <input type="text" id="food" placeholder="Enter food name">
             </div>
 
-            <div class="checkbox-group">
-                <div class="checkbox-box">
-                    <input type="checkbox" id="breakfast" name="time" value="breakfast">
-                    <label for="breakfast">Breakfast</label>
-                </div>
-                <div class="checkbox-box">
-                    <input type="checkbox" id="lunch" name="time" value="lunch">
-                    <label for="lunch">Lunch</label>
-                </div>
-                <div class="checkbox-box">
-                    <input type="checkbox" id="dinner" name="time" value="dinner">
-                    <label for="dinner">Dinner</label>
-                </div>
+            <div class="time-buttons">
+                <button class="time-button" id="breakfast">Breakfast</button>
+                <button class="time-button" id="lunch">Lunch</button>
+                <button class="time-button" id="dinner">Dinner</button>
             </div>
+
+            <div id="additional-fields"></div>
 
             <div class="form-group">
                 <label for="age">Your Age:</label>
@@ -195,54 +194,65 @@
     </div>
 
     <script>
-        const checkboxes = document.querySelectorAll('input[name="time"]');
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function () {
-                if (this.checked) {
-                    checkboxes.forEach(cb => {
-                        if (cb !== this) {
-                            cb.checked = false;
-                        }
-                    });
+        const timeButtons = document.querySelectorAll('.time-button');
+        const additionalFields = document.getElementById('additional-fields');
+    
+        timeButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                timeButtons.forEach(btn => btn.classList.remove('selected'));
+                this.classList.add('selected');
+    
+                additionalFields.innerHTML = '';
+    
+                if (this.id === 'lunch') {
+                    additionalFields.innerHTML = `
+                        <div class="form-group">
+                            <label for="breakfast-input">아침에는 무엇을 먹었나요?</label>
+                            <input type="text" id="breakfast-input" placeholder="아침에는 무엇을 먹었나요?">
+                        </div>`;
+                } else if (this.id === 'dinner') {
+                    additionalFields.innerHTML = `
+                        <div class="form-group">
+                            <label for="breakfast-input">아침에는 무엇을 먹었나요?</label>
+                            <input type="text" id="breakfast-input" placeholder="아침에는 무엇을 먹었나요?">
+                        </div>
+                        <div class="form-group">
+                            <label for="lunch-input">점심에는 무엇을 먹었나요?</label>
+                            <input type="text" id="lunch-input" placeholder="점심에는 무엇을 먹었나요?">
+                        </div>`;
                 }
             });
         });
-
+    
         document.getElementById('analyze-btn').addEventListener('click', function () {
             const resultsContainer = document.getElementById('dynamic-results');
-            resultsContainer.innerHTML = ''; // 첫 번째로 여기에서 초기화
-
-            // 사용자가 선택한 시간을 받아오기
-            const food_time = [];
-            if (document.getElementById('breakfast').checked) food_time.push('breakfast');
-            if (document.getElementById('lunch').checked) food_time.push('lunch');
-            if (document.getElementById('dinner').checked) food_time.push('dinner');
-
-            // 사용자 입력값 받아오기
-            const food_details = document.getElementById('food').value;  // 음식 이름
-            const age = document.getElementById('age').value;  // 나이
-            const is_on_diet = document.getElementById('diet').value;  // 다이어트 여부
-
-            // 입력값이 제대로 입력되었는지 확인
-            if (!food_details || !age || !is_on_diet) {
+            resultsContainer.innerHTML = '';
+    
+            const foodDetails = document.getElementById('food').value;
+            const age = document.getElementById('age').value;
+            const isOnDiet = document.getElementById('diet').value;
+            const breakfastInput = document.getElementById('breakfast-input')?.value || '';
+            const lunchInput = document.getElementById('lunch-input')?.value || '';
+    
+            const selectedTime = [...timeButtons].find(btn => btn.classList.contains('selected'))?.id;
+    
+            if (!foodDetails || !age || !isOnDiet || !selectedTime) {
                 alert("Please fill out all required fields.");
-                return; // 필수 입력 항목이 비어 있으면 함수 종료
+                return;
             }
-
-            // API 경로
+    
             const url = 'http://127.0.0.1:8000/api/calories/';
-
-            // 사용자 입력값으로 POST 요청 데이터 구성
+    
             const data = {
-                food_time: food_time.join(', '),  // 선택된 음식 시간들을 쉼표로 구분하여 전송
-                food_details: food_details,  // 음식 이름
-                age: age,  // 나이
-                is_on_diet: is_on_diet,  // 다이어트 여부
-                chosen_language: 'en',  // 언어 선택 (기본값: 영어)
+                food_time: selectedTime,
+                food_details: foodDetails,
+                age: age,
+                is_on_diet: isOnDiet,
+                breakfast: selectedTime === 'lunch' || selectedTime === 'dinner' ? breakfastInput : '',
+                lunch: selectedTime === 'dinner' ? lunchInput : '',
+                chosen_language: 'en',
             };
-
-            // fetch 요청 보내기
+    
             fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -250,8 +260,7 @@
             })
             .then(res => res.json())
             .then(responseData => {
-                console.log('Response:', responseData);  // 응답 데이터 처리
-                // 응답 데이터를 화면에 표시할 경우
+                console.log('Response:', responseData);
                 resultsContainer.innerHTML = JSON.stringify(responseData, null, 2);
             })
             .catch(error => console.error('Error:', error));
