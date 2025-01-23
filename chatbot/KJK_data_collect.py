@@ -121,12 +121,7 @@ def recipe_finder(query, country_food=None):
             persist_directory=persist_directory,
             embedding_function=embeddings,
         )
-        print(vector_store)
         documents = load_documents(country_food)
-        print(documents)
-    else:
-        print("directory 오류")
-    print("Hello")
     callback_handler = StreamingStdOutCallbackHandler()
     callback_manager = CallbackManager([callback_handler])
     llm = ChatOpenAI(model = 'gpt-4o-mini', temperature = 0, streaming=True, callbacks=[callback_handler], api_key=openai.api_key) #streaming=True, callbacks=[callback_handler]
@@ -208,6 +203,7 @@ def recipe_finder(query, country_food=None):
 
     if you cannot find the documents or recipe in the given folderm, follow the next step
     Don't say anthing but follow the steps below.
+    Then follow these steps:
     You are a professional chef who knows every ingredient and detailed cooking process for any dish. When given a specific food topic:
     1. Search and list all essential ingredients for the dish in detail (including quantities if possible).
     2. Provide a step-by-step cooking process with precise instructions and tips for achieving the best results.
@@ -327,10 +323,20 @@ def recipe_finder(query, country_food=None):
     **고구마 튀김**들도 맛있습니다.
 
     총 칼로리:기존 레시피 총 칼로리는 약 546 칼로리이고, 파슬리가루를 추가하면 총 549 칼로리가 됩니다.
+
+    but if you recevied someting like a question, you must follow the instruction below
+    You are a master chef and a helpful assistant. You will receive multiple questions based on your answer but don't make any duplicated answers.
+    1. **Answer the Question**
+    - Provide a thorough and informative response to each question.
+    2. **Detailed Ingredient Instructions**
+    - If the user asks how to make specific ***ingredients***, provide a detailed, step-by-step explanation on how to prepare them.
+    **Notes:**
+    - Ensure all responses are clear, concise, and relevant to the user's queries.
+    - Maintain a professional and friendly tone throughout the conversation.
     """
+
     response = llm.invoke(context)
     response = response.content
-    print(response)
     return response
 
 def question(response, continue_question):
