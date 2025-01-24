@@ -2,12 +2,17 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+<<<<<<< HEAD
 import warnings
 import dotenv
 
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
+=======
+
+
+>>>>>>> JSH
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'recipe_project.settings')
@@ -23,5 +28,8 @@ def main():
 
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     dotenv.load_dotenv()
+=======
+>>>>>>> JSH
     main()

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+<<<<<<< HEAD
 from dotenv import load_dotenv
 from datetime import timedelta
 import os
@@ -23,6 +24,8 @@ import os
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY2")
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+=======
+>>>>>>> JSH
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +40,7 @@ SECRET_KEY = 'django-insecure-_w05b3zlf)&!mu#u)cz9k(a7oidh&@%l&fm@=8c&9hm29rh+$2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+<<<<<<< HEAD
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 # Application definition
 
@@ -45,6 +49,12 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1), # 리플레쉬 유효기간 일딴 30분으로 지정
     'AUTH_HEADER_TYPES': ('Bearer',), # http 헤더 bearer설정
 }
+=======
+ALLOWED_HOSTS = []
+
+
+# Application definition
+>>>>>>> JSH
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -57,6 +67,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt', # jwt 관련 앱
     'accounts', # 이앱은 사용자 관리 앱임
+<<<<<<< HEAD
     'food', # recipe레시피 이름이 중복이라 food로 지정 #레시피 모델들을 관리하는 앱
     'chatbot', #ai챗봇 연결앱
     'calories', # 칼로리 앱 추가
@@ -69,6 +80,11 @@ REST_FRAMEWORK = {
 }
 
 
+=======
+    'food', # recipe레시피 이름이 중복이라 food로 지정 #레시피 모델들을 관리하는 앱앱
+]
+
+>>>>>>> JSH
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -84,7 +100,11 @@ ROOT_URLCONF = 'recipe_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+<<<<<<< HEAD
         'DIRS': [BASE_DIR / 'templates'], # 'templates' 폴더 경로 설정
+=======
+        'DIRS': [],
+>>>>>>> JSH
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -105,11 +125,20 @@ WSGI_APPLICATION = 'recipe_project.wsgi.application'
 
 DATABASES = {
     'default': {
+<<<<<<< HEAD
         'ENGINE': 'django.db.backends.sqlite3',  # SQLite3 데이터베이스 엔진
         'NAME': BASE_DIR / 'db_2.sqlite3',  # 프로젝트의 루트 디렉토리에 db.sqlite3 파일 생성
     }
 }
 
+=======
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+
+>>>>>>> JSH
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -128,12 +157,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+<<<<<<< HEAD
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
 
 
+=======
+>>>>>>> JSH
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

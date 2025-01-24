@@ -1,4 +1,5 @@
 from django.urls import path
+<<<<<<< HEAD
 from rest_framework_simplejwt.views import TokenRefreshView
 from .views import (
     ProfileView,
@@ -33,3 +34,10 @@ urlpatterns = [
     # 태그 목록 조회
     path('tags/', TagListView.as_view(), name='tag-list'),
 ]
+=======
+from .views import UserCreateView 
+
+urlpatterns = [
+    path('register/', UserCreateView.as_view(), name='user-register'),  # 사용자 등록 API
+]
+>>>>>>> JSH

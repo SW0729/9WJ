@@ -8,6 +8,7 @@ venv/
 db/
 
 # 환경 변수 파일 (.env)
+<<<<<<< HEAD
 .env
 
 
@@ -411,3 +412,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+=======
+.env
+>>>>>>> JSH
