@@ -347,7 +347,7 @@ def question(response, continue_question):
             break
         client2 = OpenAI(api_key=openai.api_key)
         completion2 = client2.chat.completions.create(
-            model = 'gpt-4o-mini',
+            model = 'gpt-4o',
             messages = [
                 {'role': 'system', 'content': """
                 You are a master chef and a helpful assistant. You will receive multiple questions based on {response} but don't make any duplicated answers.

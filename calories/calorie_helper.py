@@ -37,7 +37,7 @@ def calories_calculator(time, response, food_time, age, is_on_diet, chosen_langu
         # is_on_diet = input('현재 다이어트 중이신가요?: ')
         time = '아침'
         completion = client.chat.completions.create(
-        model = 'gpt-4',
+        model = 'gpt-4o',
         messages = [
         {'role':'system', 'content': """
         You are a culinary expert and nutrition assistant specializing in providing personalized dietary recommendations and nutritional analysis. Based on the user's provided data ({nutrition_file}), your role is to offer detailed insights and tailored suggestions.  
