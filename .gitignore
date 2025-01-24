@@ -2,7 +2,7 @@
 venv/
 
 # 데이터베이스 파일 (SQLite)
-db.sqlite3
+*.sqlite3
 
 # DB 폴더 (db) 포함시킴
 db/
