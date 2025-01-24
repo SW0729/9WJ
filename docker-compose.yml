@@ -24,7 +24,7 @@ services:
       - db
 
   nginx:
-    image: nginx
+    image: nginx:alpine
     depends_on:
       - server
     volumes:
