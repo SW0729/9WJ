@@ -371,4 +371,3 @@ def question(response, continue_question):
                 print(chunk.choices[0].delta.content, end="", flush = True)
         chat_history_log.append({'role': 'user', 'content': continue_question})
         chat_history_log.append({'role': 'assistant', 'content': completion2})
-
