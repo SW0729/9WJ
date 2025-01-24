@@ -22,3 +22,5 @@ class calories(models.Model):
     # 유저가 다이어트중인가? 거짓말
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="생성 날짜") 
     # 편의기능 저장한 시간을 자동 기록기능
+    breakfast_time = models.TextField(verbose_name="아침 정보", null = True, blank=True) 
+    lunch_time = models.TextField(verbose_name="점심 정보", null = True, blank=True) 

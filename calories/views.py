@@ -46,7 +46,7 @@ class CalorieView(APIView): # 이제 간단하게 하자 너무 길다야
 
             try:
                 md = markdown.Markdown(extensions=["fenced_code"])
-
+                print(data['food_time'], data['food_time'], data['age'], str(data['is_on_diet']), data["breakfast_time"], data["lunch_time"])
                 result = calories_calculator(
                     time=data['food_time'], 
                     # filtered_file=None,  
@@ -55,17 +55,19 @@ class CalorieView(APIView): # 이제 간단하게 하자 너무 길다야
                     age=str(data['age']),
                     is_on_diet=str(data['is_on_diet']),
                     chosen_language=chosen_language,
-                    breakfast_time =  "breakfast_time",
-                    lunch_time = "lunch",
-                    
+                    breakfast_time =  data["breakfast_time"],
+                    lunch_time = data["lunch_time"],
                 )
+               
                 # markdown 결과 후 \n을 <br>로 변환하여 HTML로 처리
+                print(result)
                 markdown_results = md.convert(result).replace('\n', '<br>')
 
                 serializer.save()  # 입력 데이터를 저장
-                return Response({"analysis": markdown_results}, status=status.HTTP_200_OK)
+                
+                return Response(markdown_results, status=status.HTTP_200_OK)
 
             except Exception as e:
-                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error": str(traceback.format_exc())}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

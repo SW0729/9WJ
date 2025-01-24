@@ -13,7 +13,7 @@ class Caloriesserializer(serializers.ModelSerializer): # 칼로리 모델 직렬
         return value
 
     def validate_food_time(self, value):
-        allowed_values = ['아침', '점심', '저녁']
+        allowed_values = ['breakfast', 'lunch', 'dinner']
         if value not in allowed_values:
             raise serializers.ValidationError(f"'{value}'는 올바른 식사 시간이 아닙니다.")
         return value
