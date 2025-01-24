@@ -204,7 +204,7 @@
             const recipeItemsElement = document.getElementById("recipeItems");
 
             // 이메일 정보 가져오기
-            fetch('http://127.0.0.1:8000/api/auth/profile/')
+            fetch('/api/auth/profile/')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -220,7 +220,7 @@
                 });
 
             // 사용자가 검색한 레시피 가져오기
-            fetch('http://127.0.0.1:8000/api/recipes/searched/') // 가상의 API URL
+            fetch('/api/recipes/searched/') // 가상의 API URL
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
