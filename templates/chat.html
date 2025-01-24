@@ -188,13 +188,13 @@
 <body>
     <header>
         <h1>
-            <img src="chat-icon.png" alt="Logo">
+            <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fctr5SL%2FbtsLXPZD5bt%2FNo1dzt4VM9lCbuFEKsuW1k%2Fimg.png" alt="Logo">
             맛봇
         </h1>
         <nav>
-            <a href="/main">홈</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
+            <a href="{% url 'main' %}">홈</a>
+            <a href="{% url 'profile' %}">프로필</a>
+            <a href="{% url 'calories' %}">오늘의 식단</a>
         </nav>
     </header>
     <main>

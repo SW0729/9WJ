@@ -1,3 +1,4 @@
+import markdown
 from django.shortcuts import render # 템플릿 함수수
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -16,6 +17,8 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY2")
 # 챗봇 페이지
 def chatbot_view(request):
     return render(request, 'chat.html') # 'chatbot' 랜더링
+
+
 
 # 요청 데이터를 확인하기 위한 클래스
 class RecipeSearchSerializer(serializers.Serializer):
@@ -61,15 +64,17 @@ class RecipeSearchView(APIView):
         print(query,country_food)
 
         try:
+            md = markdown.Markdown(extensions=["fenced_code"])
             # `recipe_finder`를 호출하여 결과 얻기
             results = recipe_finder(query, country_food)
+            markdown_results = md.convert(results)
 
             # 검색 결과가 없을 경우 처리
             if not results:
                 return Response({"results": "검색 결과가 없습니다. 다른 키워드로 시도해보세요."}, status=status.HTTP_200_OK)
 
             # 성공적으로 결과 반환
-            return Response({"results": results}, status=status.HTTP_200_OK)
+            return Response({"results": markdown_results}, status=status.HTTP_200_OK)
 
         except ValueError as ve:
             # 잘못된 값 처리

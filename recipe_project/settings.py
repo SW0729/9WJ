@@ -37,7 +37,7 @@ SECRET_KEY = 'django-insecure-_w05b3zlf)&!mu#u)cz9k(a7oidh&@%l&fm@=8c&9hm29rh+$2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '54.180.114.56']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '54.180.114.56,' 'mat-bot.com', 'www.mat-bot.com']
 # Application definition
 
 SIMPLE_JWT = {
