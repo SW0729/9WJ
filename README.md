@@ -31,15 +31,17 @@
 4. **사용자의 연령과 체중 감량 여부에 맞춘 레시피 제공**: 사용자의 연령과 체중 감량 여부에 맞춘 식단을 제공합니다
 ---
 ## 기술 스택🥽
-**백엔드**: Django Rest Framework
+**백엔드**: Django Rest Framework, python 3.12
 
 **프론트엔드**: Bootstrap
 
-**챗봇**: Langchain, Chroma, OpenAI
+**챗봇**: Langchain, Chroma, OpenAI ChatGPT 4o mini
 
 **데이터베이스**: SQLITE3
 
 **협업 도구**: Slack
+
+**일정 관리**: Notion
 
 ---
 ## 기술적 의사결정⚖️
