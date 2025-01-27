@@ -121,8 +121,8 @@
 
 ---
 ## 6. 서비스 아키텍쳐📶
-https://github.com/SW0729/9WJ/blob/main/Architecture.png
+![로컬 이미지](Architecture.png)
 ---
 ## 7. ERD📊
-https://github.com/SW0729/9WJ/blob/main/ERD.png
+![로컬 이미지](ERD.png)
 ---
