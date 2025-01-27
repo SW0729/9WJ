@@ -34,6 +34,8 @@ def profile_view(request):
 def signup_view(request):
     return render(request, 'signup.html') # signup,html 랜더링
 
+def home_view(request):
+    return render(request, 'home.html') # home.html 랜더링
 
 # JWT 토큰
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -161,16 +163,12 @@ class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        user = request.user # 현재 로그인된 유저 가져오기
-        serializer = CustomUserSerializer(user) # 사용자 정보를 직렬화
-        return Response(serializer.data) # 직렬화된 데이터를 응답 가져오기기
-
-    def post(self, request): # 유저가 새로운 레시피 저장할 수 있게 지정
-        serializer = RecipeSerializer(data=request.data)
-        if serializer.is_valid():# 데이터 확인
-            serializer.save(author=request.user)# 유저레시피 저장장
-            return Response(serializer.data, status=status.HTTP_201_CREATED)# 성공하면 혁명
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)# 실패하면 반역
+        user = request.user
+        serializer = CustomUserSerializer(user)
+        return Response({
+            "user": serializer.data,
+            "my_recipes": RecipeSerializer(user.recipes.all(), many=True).data  # 사용자의 레시피 추가
+        })
 
 
 # 레시피 목록 및 생성

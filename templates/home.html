@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Recipe Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url('https://img.freepik.com/premium-photo/professional-chef-cooking-food-pan-with-fire-flame-black-background_1337460-53885.jpg?w=360') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+        }
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        .content {
+            position: relative;
+            z-index: 2;
+        }
+        .hero {
+            height: calc(100vh - 150px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 100px;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-family: 'Helvetica Neue', sans-serif;
+            font-weight: bold;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+        }
+        .hero p {
+            font-size: 1.6rem;
+            margin-bottom: 2rem;
+            font-family: 'Georgia', serif;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+        }
+        .features {
+            padding: 4rem 2rem;
+            text-align: center;
+            z-index: 2;
+            position: relative;
+            top: -850px;
+        }
+        .features h2 {
+            margin-bottom: 3rem;
+            font-size: 2.3rem;
+            color: #ffcc00;
+            font-family: 'Arial', sans-serif;
+            font-weight: 600;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+        }
+        .features .card {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s, background-color 0.3s;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fade-in-slide 1.5s ease-out forwards;
+        }
+        .features .card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+        .features .card:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+        .features .card:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+        .features .card:hover {
+            transform: scale(1.05);
+            background-color: rgba(119, 119, 119, 0.9);
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #fff;
+        }
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 1rem;
+            position: relative;
+            z-index: 3;
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+        .navbar-brand img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        .navbar-brand span {
+            font-size: 1.8rem;
+            color: #fff;
+            font-weight: 700;
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+        @keyframes fade-in-slide {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .new-features {
+            margin-top: -700px;
+            margin-bottom: 100px;
+            text-align: center;
+            animation: fade-in-slide 1.5s ease-out forwards;
+            animation-delay: 1.5s;
+        }
+
+        .new-feature-card {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s, background-color 0.3s;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fade-in-slide 1.5s ease-out forwards;
+        }
+
+        .new-feature-card:nth-child(1) {
+            animation-delay: 1.7s;
+        }
+
+        .new-feature-card:nth-child(2) {
+            animation-delay: 1.9s;
+        }
+
+        .new-feature-card:hover {
+            transform: scale(1.05);
+            background-color: rgba(119, 119, 119, 0.9);
+        }
+
+        .new-feature-card h3 {
+            color: #ffcc00;
+            font-family: 'Helvetica Neue', sans-serif;
+            font-weight: 600;
+        }
+
+        .new-feature-card a {
+            margin-top: 1rem;
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            background-color: #45a049;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            box-shadow: 0 4px 10px rgba(255, 87, 34, 0.4);
+            font-size: 1.2rem;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .new-feature-card a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand">
+                <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fctr5SL%2FbtsLXPZD5bt%2FNo1dzt4VM9lCbuFEKsuW1k%2Fimg.png" alt="Logo">
+                <span>맛봇</span>
+            </a>
+            <div class="d-flex">
+                <!-- 프로필 버튼 -->
+                <a href="http://mat-bot.com:8000/profile/" class="btn btn-outline-light me-3" role="button">
+                    프로필
+                </a>
+                <!-- 로그아웃 버튼 -->
+                <a href="/logout" class="btn btn-outline-light" role="button">
+                    로그아웃
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class="overlay"></div>
+    <div class="content">
+        <section class="hero">
+            <h1>맛봇: 당신의 스마트한 요리 파트너</h1>
+            <p>AI가 추천 및 알려주는 맞춤형 요리와 레시피로 새로운 미식 경험을 시작해보세요.</p>
+        </section>
+        <section class="features" id="features">
+            <h2>언제든지 원하는 요리</h2>
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card p-4">
+                            <h3>원하는 만큼, 언제든지!</h3>
+                            <p>시간과 장소에 상관없이, 다양한 레시피를 탐색해보세요.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card p-4">
+                            <h3>추천 메뉴로 간편하게</h3>
+                            <p>오늘의 추천 메뉴를 통해 고민 없이 최적의 선택을 해보세요.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card p-4">
+                            <h3>모든 요리를 한눈에</h3>
+                            <p>한식부터 양식, 중식, 일식까지 원하는 요리를 한곳에서 만나보세요.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="new-features">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="new-feature-card p-4">
+                            <h3>레시피 얻으러가기</h3>
+                            <p>다양한 요리 레시피를 AI로 통해 탐색해보세요!</p>
+                            <a href="http://mat-bot.com:8000/chatbot/" class="btn btn-primary">시작하기</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="new-feature-card p-4">
+                            <h3>아...오늘 뭐 먹지?</h3>
+                            <p>건강한 식단 혹은 나만의 식단을 손쉽게 관리할 수 있는 도구를 만나보세요!</p>
+                            <a href="http://mat-bot.com:8000/calories/" class="btn btn-primary">시작하기</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="new-feature-card p-4">
+                            <h3>재료 밖에 없는데 뭘 만들지?</h3>
+                            <p>자신이 가지고 있는 재료를 바탕으로 언제든지 메뉴를 추천받으세요!</p>
+                            <a href="/ingredients" class="btn btn-primary">시작하기</a> {% comment %} 수정 필요 {% endcomment %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2025 AI Recipe Hub. All rights reserved.</p>
+    </footer>
+</body>
+</html>

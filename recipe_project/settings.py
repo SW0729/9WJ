@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'food', # recipe레시피 이름이 중복이라 food로 지정 #레시피 모델들을 관리하는 앱
     'chatbot', #ai챗봇 연결앱
     'calories', # 칼로리 앱 추가
+    'ingredients_ai',
 ]
 
 REST_FRAMEWORK = {

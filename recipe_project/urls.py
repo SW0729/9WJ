@@ -18,9 +18,10 @@ from django.contrib import admin
 from django.urls import path, include  # include는 다른 URL을 포함시킬 때 사용
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView  # JWT 관련 뷰
 from django.http import JsonResponse  # json형식으로 응답을 위한 도구
-from accounts.views import login_view,main_view,profile_view,signup_view # html 로그인,메인,프로필,회원가입 뷰 불러오기기
+from accounts.views import login_view,main_view,profile_view,signup_view, home_view # html 로그인,메인,프로필,회원가입 뷰 불러오기기
 from chatbot.views import chatbot_view  # html 챗봇 뷰 불러오기
 from calories.views import calories_view  # html 칼로리 뷰 불러오기
+from ingredients_ai.views import ingredients_view
 
 
 def root_view(request):
@@ -33,7 +34,8 @@ urlpatterns = [
     path('api/food/', include('food.urls')),  # 음식 관련 urls
     path('api/chatbot/', include('chatbot.urls')),  # 챗봇 추가
     path('api/calories/', include('calories.urls')), # 칼로리 추가
-    
+    path('api/ingredients/', include('ingredients_ai.urls')),
+
     # JWT 관련 URL 추가
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # JWT 발급
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # JWT 리프레시
@@ -44,6 +46,8 @@ urlpatterns = [
     path('login/', login_view, name='login'),    #'login/' 경로로 들어오면 login_view를 실행
    
     path('main/', main_view, name='main'),      # 'main/' 경로로 들어오면 main_view를 실행
+
+    path('home/', home_view, name='home'),
    
     path('profile/', profile_view, name='profile'),  # 'profile/' 경로로 들어오면 profile_view를 실행
    
@@ -53,6 +57,6 @@ urlpatterns = [
    
     path('calories/', calories_view, name='calories'),  # 'calories/' 경로로 들어오면 calories_view를 실행
 
-
+    path('ingredients/', ingredients_view, name='ingredients')
 ]
 
