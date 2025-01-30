@@ -134,6 +134,15 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: messageAppear 0.5s forwards;
+        }
+        @keyframes messageAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .message.user {
@@ -141,20 +150,20 @@
             background-color: #ffc107;
             color: black;
         }
-
+    
         .message.bot {
             align-self: flex-start;
             background-color: rgba(255, 255, 255, 0.1);
             color: white;
         }
-
+    
         .message .formatted {
             font-family: 'Courier New', monospace;
             background-color: rgba(255, 255, 255, 0.1);
             padding: 10px;
             border-radius: 10px;
         }
-
+    
         .message-time {
             font-size: 12px;
             align-self: flex-end;
@@ -183,6 +192,21 @@
         footer input:focus {
             border-color: #ffc107;
         }
+        .meal-button {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 5px 0;
+            background-color: #4CAF50;
+            color: rgb(255, 255, 255);
+            font-size: 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .meal-button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -192,9 +216,9 @@
             맛봇
         </h1>
         <nav>
-            <a href="{% url 'main' %}">홈</a>
-            <a href="{% url 'profile' %}">프로필</a>
-            <a href="{% url 'calories' %}">오늘의 식단</a>
+            {% comment %} <a href="{% url '#' %}">홈</a> {% endcomment %}
+            {% comment %} <a href="{% url 'http://mat-bot.com:8000/profile/' %}">프로필</a>
+            <a href="{% url 'http://mat-bot.com:8000/calories/' %}">오늘의 식단</a> {% endcomment %}
         </nav>
     </header>
     <main>
@@ -207,8 +231,6 @@
         </div>
         <div class="chat-container" id="chat-container">
             <div class="message bot">
-                <div class="message-text">안녕하세요! 원하시는 음식을 입력하면 레시피가 나옵니다!</div>
-                <div class="message-time">18:20</div>
             </div>
         </div>
     </main>
@@ -216,6 +238,61 @@
         <input type="text" placeholder="음식의 이름을 입력하세요!" id="user-input">
     </footer>
 <script>
+    async function fetchRecommendedDish() {
+        const apiUrl = 'https://www.themealdb.com/api/json/v1/1/random.php';
+        const meals = [];
+        try {
+            for (let i = 0; i < 3; i++) {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                if (data.meals && data.meals.length > 0) {
+                    const meal = data.meals[0];
+                    meals.push({
+                        name: meal.strMeal,
+                        image: meal.strMealThumb,
+                        category: meal.strCategory
+                    });
+                }
+            }
+        
+            if (meals.length > 0) {
+                const recommendedDishElement = document.createElement('div');
+                recommendedDishElement.innerHTML = `
+                    <div class="message-text">
+                        안녕하세요! 원하시는 음식을 입력하면 레시피가 나옵니다!<br>
+                        혹시 뭘 찾아야 할지 모르시겠나요? 이건 어때요?:
+                        버튼을 누르면 자동으로 채팅창에 들어갑니다!<br>
+                        1. <div class="meal-button" onclick="populateSearchBox('${meals[0].name}')">${meals[0].name}</div><br>
+                        <img src="${meals[0].image}" alt="${meals[0].name}" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; margin-left: 10px;">
+                        <span style="font-size: 12px; color: #ccc;">(${meals[0].category})</span><br>
+                        
+                        2. <div class="meal-button" onclick="populateSearchBox('${meals[1].name}')">${meals[1].name}</div><br>
+                        <img src="${meals[1].image}" alt="${meals[1].name}" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; margin-left: 10px;">
+                        <span style="font-size: 12px; color: #ccc;">(${meals[1].category})</span><br>
+                        
+                        3. <div class="meal-button" onclick="populateSearchBox('${meals[2].name}')">${meals[2].name}</div><br>
+                        <img src="${meals[2].image}" alt="${meals[2].name}" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; margin-left: 10px;">
+                        <span style="font-size: 12px; color: #ccc;">(${meals[2].category})</span>
+                    </div>
+                `;
+                recommendedDishElement.className = 'message bot';
+                document.getElementById('chat-container').appendChild(recommendedDishElement);
+            } else {
+                document.getElementById('chat-container').innerHTML = '<p>No meals found.</p>';
+            }
+        } catch (error) {
+            console.error('Error fetching the meal:', error);
+            document.getElementById('chat-container').innerHTML = '<p>Failed to load recommended dishes. Please try again later.</p>';
+        }
+    }
+    
+    function populateSearchBox(mealName) {
+        const userInput = document.getElementById('user-input');
+        userInput.value = mealName;  
+    }
+    
+    document.addEventListener('DOMContentLoaded', fetchRecommendedDish);
+
     const chatContainer = document.getElementById('chat-container');
     const userInput = document.getElementById('user-input');
     const categoryButtons = document.querySelectorAll('.category-btn');
@@ -240,7 +317,7 @@
             appendMessage('bot', '검색 중입니다... 조금만 기다려 주세요');
 
             try {
-                const response = await fetch('/api/chatbot/recipes/search/', {
+                const response = await fetch('http://127.0.0.1:8000/api/chatbot/recipes/search/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ query: userMessage, country_food })

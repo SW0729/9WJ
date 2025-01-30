@@ -118,9 +118,9 @@
                 console.log(data);
                 if (data.data && data.data.access) {  // 로그인 성공
                     alert('로그인에 성공했습니다! 환영합니다.');
-                    localStorage.setItem('access_token', data.access);  // 토큰 저장
+                    localStorage.setItem('access_token', data.token);  // 토큰 저장
                     window.location.href = '/chatbot';  // 로그인 후 리디렉션할 페이지
-                    
+                    s
                 } else if (data.error) {
                     alert(data.error);
                 } else {
