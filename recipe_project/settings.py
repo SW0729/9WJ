@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'chatbot', #ai챗봇 연결앱
     'calories', # 칼로리 앱 추가
     'ingredients_ai',
+    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -78,7 +79,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'recipe_project.urls'
 
