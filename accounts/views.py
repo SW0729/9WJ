@@ -133,7 +133,7 @@ class RegisterView(APIView):
             )
 
         # 사용자 생성
-        user = CustomUser.objects.create_user(username=username, email=email, password=password)
+        user = CustomUser.objects.create_user(email=email, password=password)
         return Response(
             {"message": "회원가입 성공", "username": user.username},
             status=status.HTTP_201_CREATED
