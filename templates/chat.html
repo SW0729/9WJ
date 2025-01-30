@@ -317,7 +317,7 @@
             appendMessage('bot', '검색 중입니다... 조금만 기다려 주세요');
 
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/chatbot/recipes/search/', {
+                const response = await fetch('/api/chatbot/recipes/search/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ query: userMessage, country_food })
