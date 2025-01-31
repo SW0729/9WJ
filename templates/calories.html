@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Intake Analyzer</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            color: #f8f9fa;
+            background: url('https://cdn.pixabay.com/photo/2023/05/14/13/58/background-7993019_1280.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 30%;
+            background-color: rgba(52, 58, 64, 0.9);
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-right: 2px solid #32cd32;
+        }
+
+        .sidebar h1 {
+            color: #32cd32;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: calc(100% - 20px);
+            max-width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #495057;
+            border-radius: 5px;
+            background-color: #2c2c2e;
+            color: #f8f9fa;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #32cd32;
+        }
+
+        .time-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .time-button {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #2c2c2e;
+            color: #f8f9fa;
+            border: 1px solid #495057;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .time-button.selected {
+            background-color: #32cd32;
+            color: #1c1c1e;
+        }
+
+        .submit-btn {
+            background-color: #32cd32;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #28a428;
+        }
+
+        .results-panel {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            border-left: 2px solid #32cd32;
+        }
+
+        .results-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #32cd32;
+        }
+
+        .results-panel h2 {
+            color: #32cd32;
+            padding-bottom: 5px;
+            margin: 0;
+        }
+
+        .reset-btn {
+            background-color: #32cd32;
+            color: #1c1c1e;
+            text-decoration: none;
+            padding: 8px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background-color: #28a428;
+        }
+
+        .result-box {
+            font-size: 18px;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            white-space: pre-wrap; /* Ensures line breaks in text */
+        }
+
+        .result-box p {
+            margin: 0;
+        }
+
+        #dynamic-results {
+            margin-top: 20px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .navbar {
+            background-color: rgba(52, 58, 64, 0.9);
+            padding: 10px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            border-bottom: 2px solid #32cd32;
+        }
+
+        .navbar .home-btn {
+            background-color: #32cd32;
+            color: #1c1c1e;
+            text-decoration: none;
+            padding: 8px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .navbar .home-btn:hover {
+            background-color: #28a428;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'main' %}" class="home-btn">Home</a>
+        <a href="javascript:window.history.back()" class="home-btn">뒤로가기</a>
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <h1>오늘의 식단 분석</h1>
+            <div class="form-group">
+                <label for="food">섭취한 음식:</label>
+                <input type="text" id="food" placeholder="음식 메뉴">
+            </div>
+
+            <div class="time-buttons">
+                <button class="time-button" id="breakfast">아침</button>
+                <button class="time-button" id="lunch">점심</button>
+                <button class="time-button" id="dinner">저녁</button>
+            </div>
+
+            <div id="additional-fields"></div>
+
+            <div class="form-group">
+                <label for="age">나이:</label>
+                <input type="number" id="age" placeholder="현재 나이">
+            </div>
+
+            <div class="form-group">
+                <label for="diet">체중 감량 여부</label>
+                <select id="diet">
+                    <option value="yes">네, 하고있습니다.</option>
+                    <option value="no">아니요, 안 하고있습니다</option>
+                </select>
+            </div>
+
+            <button class="submit-btn" id="analyze-btn">분석하기</button>
+        </div>
+
+        <div class="results-panel">
+            <div class="results-panel-header">
+                <h2>분석 결과</h2>
+            </div>
+            <div id="dynamic-results" class="result-box"></div>
+        </div>
+    </div>
+
+    <script>
+        const timeButtons = document.querySelectorAll('.time-button');
+        const additionalFields = document.getElementById('additional-fields');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const resultsContainer = document.getElementById('dynamic-results');
+
+        let food_time = null;
+
+        timeButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                timeButtons.forEach(btn => btn.classList.remove('selected'));
+                this.classList.add('selected');
+                food_time = this.id;
+
+                additionalFields.innerHTML = '';
+                if (food_time === 'lunch') {
+                    additionalFields.innerHTML = `
+                        <div class="form-group">
+                            <label for="breakfast-input">아침에 섭취한 음식:</label>
+                            <input type="text" id="breakfast-input" placeholder="아침 메뉴를 기입해주세요">
+                        </div>`;
+                } else if (food_time === 'dinner') {
+                    additionalFields.innerHTML = `
+                        <div class="form-group">
+                            <label for="breakfast-input">아침에 섭취한 음식:</label>
+                            <input type="text" id="breakfast-input" placeholder="아침 메뉴를 기입해주세요">
+                        </div>
+                        <div class="form-group">
+                            <label for="lunch-input">점심에 섭취한 음식:</label>
+                            <input type="text" id="lunch-input" placeholder="점심 메뉴를 기입해주세요.">
+                        </div>`;
+                }
+            });
+        });
+
+        analyzeBtn.addEventListener('click', function () {
+            resultsContainer.innerHTML = '';
+            resultsContainer.innerHTML = `<p>분석 중....조금만 기다려 주세요</p>`;
+            const food_details = document.getElementById('food').value.trim();
+            const age = document.getElementById('age').value;
+            const is_on_diet = document.getElementById('diet').value;
+            const breakfast_time = document.getElementById('breakfast-input')?.value || '';
+            const lunch_time = document.getElementById('lunch-input')?.value || '';
+
+            if (!food_details) {
+                alert("음식 이름을 입력해주세요!");
+                return;
+            }
+            if (!age || isNaN(age) || age <= 0) {
+                alert("올바른 나이를 입력해주세요!");
+                return;
+            }
+            if (!food_time) {
+                alert("언제 먹었는지 선택해주세요!");
+                return;
+            }
+
+            const url = '/api/calories/';
+            const data = {
+                food_time,
+                food_details,
+                age,
+                is_on_diet,
+                breakfast_time,
+                lunch_time,
+                chosen_language: 'kr',
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+                .then(res => res.json())
+            .then(responseData => {
+                console.log('Response:', responseData);  // 응답 데이터 처리
+                // 응답 데이터를 화면에 표시할 경우
+                resultsContainer.innerHTML = JSON.stringify(responseData, null, 2);
+            })
+                .catch(error => {
+                    console.error('Error:', error);
+                    resultsContainer.innerHTML = `<p>There was an error processing your request. Please try again later.</p>`;
+                });
+        });
+    </script>
+</body>
+</html>
